@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Эмма Кравец](https://up.htmlacademy.ru/javascript/19/user/964685).
-* Наставник: `Неизвестно`.
+* Наставник: [Сергей Ufocoder](https://up.htmlacademy.ru/javascript/19/user/573445).
 
 ---
 
