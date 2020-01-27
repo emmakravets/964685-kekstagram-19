@@ -13,7 +13,7 @@ var generateRandomNumber = function (from, to) {
   return Math.round(Math.random() * (to - from) + from);
 };
 
-var generateRandomItem = function (items, remove) {
+var getRandomItem = function (items, remove) {
   var randomItemIndex = Math.floor(Math.random() * items.length);
   var randomItem = items[randomItemIndex];
   if (remove) {
@@ -25,8 +25,8 @@ var generateRandomItem = function (items, remove) {
 var generateRandomComment = function () {
   return {
     avatar: 'img/avatar-' + generateRandomNumber(1, 6) + '.svg',
-    message: generateRandomItem(MESSAGES, true),
-    name: generateRandomItem(USER_NAMES, true)
+    message: getRandomItem(MESSAGES, true),
+    name: getRandomItem(USER_NAMES, true)
   };
 };
 
@@ -38,34 +38,15 @@ var generateRandomComments = function () {
   return comments;
 };
 
-/* var generateRandomUserPhoto = function () {
-  return {
-    url: 'photos/' + generateRandomNumber(1, 25) + '.jpg',
-    desctiption: 'Описание фотографии',
-    likes: generateRandomNumber(LIKES_COUNT_MIN, LIKES_COUNT_MAX),
-    comments: generateRandomComments(),
-  };
-};
-
-var generateRandomUserPhotos = function () {
-  var userPhotos = [];
-  for (var i = 0; i < USER_PHOTOS_LIMIT; i++) {
-    userPhotos.push(generateRandomUserPhoto());
-  }
-  return userPhotos;
-};
-*/
-
 var generateRandomUserPhotos = function () {
   var randomUserPhotos = [];
   for (var i = 1; i < USER_PHOTOS_LIMIT; i++) {
-    var randomUserPhoto = {
-      url: 'photos/' + generateRandomNumber(i, i) + '.jpg',
+    randomUserPhotos.push({
+      url: 'photos/' + i + '.jpg',
       desctiption: 'Описание фотографии',
       likes: generateRandomNumber(LIKES_COUNT_MIN, LIKES_COUNT_MAX),
       comments: generateRandomComments()
-    };
-    randomUserPhotos.push(randomUserPhoto);
+    });
   }
   return randomUserPhotos;
 };
@@ -89,9 +70,9 @@ var renderUserPhotos = function (photos) {
   picturesElement.appendChild(fragment);
 };
 
-var photo = generateRandomUserPhotos();
+var photos = generateRandomUserPhotos();
 
 var userPhotoTemplateElement = document.querySelector('#picture').content.querySelector('.picture');
 var picturesElement = document.querySelector('.pictures');
 
-renderUserPhotos(photo);
+renderUserPhotos(photos);
