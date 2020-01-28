@@ -13,20 +13,15 @@ var generateRandomNumber = function (from, to) {
   return Math.round(Math.random() * (to - from) + from);
 };
 
-var getRandomItem = function (items, remove) {
-  var randomItemIndex = Math.floor(Math.random() * items.length);
-  var randomItem = items[randomItemIndex];
-  if (remove) {
-    items.splice(randomItemIndex, 1);
-  }
-  return randomItem;
+var getRandomItem = function (items) {
+  return items[generateRandomNumber(0, items.length - 1)];
 };
 
 var generateRandomComment = function () {
   return {
     avatar: 'img/avatar-' + generateRandomNumber(1, 6) + '.svg',
-    message: getRandomItem(MESSAGES, true),
-    name: getRandomItem(USER_NAMES, true)
+    message: getRandomItem(MESSAGES),
+    name: getRandomItem(USER_NAMES)
   };
 };
 
@@ -50,7 +45,6 @@ var generateRandomUserPhotos = function () {
   }
   return randomUserPhotos;
 };
-
 
 var createUserPhotoElement = function (userPhoto) {
   var userPhotoElement = userPhotoTemplateElement.cloneNode(true);
