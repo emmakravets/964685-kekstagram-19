@@ -35,9 +35,9 @@ var generateRandomComments = function () {
 
 var generateRandomUserPhotos = function () {
   var randomUserPhotos = [];
-  for (var i = 1; i < USER_PHOTOS_LIMIT; i++) {
+  for (var i = 0; i < USER_PHOTOS_LIMIT; i++) {
     randomUserPhotos.push({
-      url: 'photos/' + i + '.jpg',
+      url: 'photos/' + (i + 1) + '.jpg',
       desctiption: 'Описание фотографии',
       likes: generateRandomNumber(LIKES_COUNT_MIN, LIKES_COUNT_MAX),
       comments: generateRandomComments()
