@@ -38,7 +38,7 @@ var generateRandomUserPhotos = function () {
   for (var i = 0; i < USER_PHOTOS_LIMIT; i++) {
     randomUserPhotos.push({
       url: 'photos/' + (i + 1) + '.jpg',
-      desctiption: 'Описание фотографии',
+      description: 'Описание фотографии',
       likes: generateRandomNumber(LIKES_COUNT_MIN, LIKES_COUNT_MAX),
       comments: generateRandomComments()
     });
@@ -64,9 +64,53 @@ var renderUserPhotos = function (photos) {
   picturesElement.appendChild(fragment);
 };
 
+var createComment = function (comment) {
+  var commentElement = commentsTemplateElement.cloneNode(true);
+
+  commentElement.querySelector('.social__picture').src = comment.avatar;
+  commentElement.querySelector('.social__picture').alt = comment.name;
+  commentElement.querySelector('.social__picture').width = '35';
+  commentElement.querySelector('.social__picture').height = '35';
+  commentElement.querySelector('.social__text').textContent = comment.message;
+
+  return commentElement;
+};
+
+var renderComments = function (comments) {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < comments.length; i++) {
+    fragment.appendChild(createComment(comments[i]));
+  }
+  commentsElement.appendChild(fragment);
+};
+
+var renderFullSizePhoto = function (fullSizePhotoIndex) {
+  fullSizePhotoElement.querySelector('img').src = photos[fullSizePhotoIndex].url;
+  fullSizePhotoElement.querySelector('.likes-count').textContent = photos[fullSizePhotoIndex].likes;
+  fullSizePhotoElement.querySelector('.comments-count').textContent = photos[fullSizePhotoIndex].comments.length + generateRandomNumber(COMMENTS_COUNT_MIN, COMMENTS_COUNT_MAX);
+  fullSizePhotoElement.querySelector('.social__caption').textContent = photos[fullSizePhotoIndex].description;
+  var userComments = generateRandomComments();
+  renderComments(userComments);
+};
+
+var hideItem = function (blockName) {
+  document.querySelector(blockName).classList.add('hidden');
+};
+
 var photos = generateRandomUserPhotos();
 
 var userPhotoTemplateElement = document.querySelector('#picture').content.querySelector('.picture');
 var picturesElement = document.querySelector('.pictures');
+var commentsElement = document.querySelector('.social__comments');
+var commentsTemplateElement = document.querySelector('.social__comment');
 
 renderUserPhotos(photos);
+
+var fullSizePhotoElement = document.querySelector('.big-picture');
+fullSizePhotoElement.classList.remove('hidden');
+
+renderFullSizePhoto(0);
+
+hideItem('.social__comment-count');
+hideItem('.comments-loader');
+document.body.classList.add('modal-open');
