@@ -17,6 +17,11 @@ var AVATAR_HEIGHT = '35';
 var PHOTO_URL_TEMPLATE = 'photos/{index}.jpg';
 var AVATAR_URL_TEMPLATE = 'img/avatar-{index}.svg';
 
+var ESC_KEY = 'Escape';
+var ENTER_KEY = 'Enter';
+
+var NONE_EFFECT = 'none';
+
 var generateRandomNumber = function (from, to) {
   return Math.round(Math.random() * (to - from) + from);
 };
@@ -109,6 +114,48 @@ var renderFullSizePhoto = function (photo) {
   renderComments(generateRandomComments());
 };
 
+var uploadFilePopupKeydownEscapeHandler = function (evt) {
+  if (evt.key === ESC_KEY) {
+    uploadFilePopupCloseHandler();
+  }
+};
+
+var uploadFilePopupKeydownEnterHandler = function (evt) {
+  if (evt.key === ENTER_KEY) {
+    uploadFilePopupOpenHandler();
+  }
+};
+
+var uploadFilePopupOpenHandler = function () {
+  editImageFormElement.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  document.addEventListener('keydown', uploadFilePopupKeydownEscapeHandler);
+  document.addEventListener('keydown', uploadFilePopupKeydownEnterHandler);
+};
+
+var uploadFilePopupCloseHandler = function () {
+  editImageFormElement.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  document.removeEventListener('keydown', uploadFilePopupKeydownEscapeHandler);
+  uploadFormElement.reset();
+};
+
+var effectDepthChangeHandler = function () {
+  var effectComputedDepth = Math.round((effectLevelDepthElement.clientWidth * 100) / effectLevelLineElement.clientWidth);
+  effectLevelValueElement.value = effectComputedDepth;
+};
+
+var getOriginEffect = function () {
+  uploadImagePreviewElement.style.filter = '';
+  effectLevelFieldsetElement.style.display = 'none';
+};
+
+
+var getEffect = function (evt) {
+  uploadImagePreviewElement.style.filter = effects[evt.target.value]();
+  effectLevelFieldsetElement.style.display = 'block';
+};
+
 var photos = generateRandomUserPhotos();
 
 var userPhotoTemplateElement = document.querySelector('#picture').content.querySelector('.picture');
@@ -119,11 +166,88 @@ var fullSizePhotoElement = document.querySelector('.big-picture');
 var commentsCountElement = document.querySelector('.social__comment-count');
 var commentsLoaderElement = document.querySelector('.comments-loader');
 
+var uploadFormElement = document.querySelector('.img-upload__form');
+var uploadImageFieldElement = document.querySelector('.img-upload');
+var uploadFilePopupElement = uploadImageFieldElement.querySelector('#upload-file');
+var editImageFormElement = uploadImageFieldElement.querySelector('.img-upload__overlay');
+var uploadFileCloseElement = uploadImageFieldElement.querySelector('#upload-cancel');
+
+var effectLevelFieldsetElement = uploadImageFieldElement.querySelector('.effect-level');
+var effectLevelSliderElement = effectLevelFieldsetElement.querySelector('.effect-level__pin');
+var effectLevelValueElement = effectLevelFieldsetElement.querySelector('.effect-level__value');
+var effectLevelLineElement = effectLevelFieldsetElement.querySelector('.effect-level__line');
+var effectLevelDepthElement = effectLevelFieldsetElement.querySelector('.effect-level__depth');
+var uploadImagePreviewElement = uploadImageFieldElement.querySelector('.img-upload__preview');
+// var effectElements = uploadImageFieldElement.querySelectorAll('.effects__preview');
+var effectRadioElements = uploadImageFieldElement.querySelectorAll('.effects__radio');
+
+var effects = {
+  'none': function () {
+    return '';
+  },
+  'chrome': function () {
+    return 'grayscale' + '(' + (effectLevelValueElement.value / 100) + ')';
+  },
+  'sepia': function () {
+    return 'sepia' + '(' + (effectLevelValueElement.value / 100) + ')';
+  },
+  'marvin': function () {
+    return 'invert' + '(' + (effectLevelValueElement.value) + ')';
+  },
+  'phobos': function () {
+    return 'blur' + '(' + (effectLevelValueElement.value / 100) + 'px)';
+  },
+  'heat': function () {
+    return 'brightness' + '(' + (effectLevelValueElement.value / 100) + ')';
+  },
+};
+
 commentsCountElement.classList.add('hidden');
 commentsLoaderElement.classList.add('hidden');
-fullSizePhotoElement.classList.remove('hidden');
+// fullSizePhotoElement.classList.remove('hidden');
 
-document.body.classList.add('modal-open');
-
+// document.body.classList.add('modal-open');
 renderUserPhotos(photos);
 renderFullSizePhoto(photos[0]);
+
+uploadFilePopupElement.addEventListener('change', uploadFilePopupOpenHandler);
+
+uploadFileCloseElement.addEventListener('click', function () {
+  uploadFilePopupCloseHandler();
+  // uploadImageFieldElement.value = '';
+});
+
+effectLevelSliderElement.addEventListener('mouseup', effectDepthChangeHandler);
+
+/* var effectChangeHandler = function (evt) {
+  if (evt.target.value === 'none') {
+    getOrigin();
+  } else {
+    getEffect(evt);
+  }
+}; */
+
+// editImageFormElement.addEventListener('click', effectChangeHandler);
+/* var effectInputElement = uploadImageFieldElement.querySelectorAll('.effects__radio');
+
+for (var i = 0; i < effectInputElement.length; i++) {
+  effectInputElement[i].addEventListener('change', function () {
+    effectChangeHandler();
+  });
+} */
+
+var effectChangeHandler = function (element) {
+  element.addEventListener('change', function (evt) {
+    if (evt.target.value === NONE_EFFECT) {
+      getOriginEffect();
+    } else {
+      getEffect(evt);
+    }
+  });
+};
+
+for (var i = 0; i < effectRadioElements.length; i++) {
+  effectChangeHandler(effectRadioElements[i]);
+}
+
+getOriginEffect();
