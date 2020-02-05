@@ -63,6 +63,16 @@ var Effects = {
   },
 };
 
+var HashtagsValidationMessages = {
+  hashtagStart: 'Хэштег должен начинаться с # (решётка)',
+  notOneHashSymbol: 'Хэштег не может состоять только из одной решётки',
+  hashtagLimit: 'Хэштег не должен превышать ' + HASHTAG_LENGTH_LIMIT + ' символов',
+  hashtagBanSymbols: 'Строка после решётки должна состоять только из букв и чисел. Использование других символов недопустимо',
+  spacesBetweenHashtags: 'Хэштеги должны разделяться пробелами',
+  hashtagsCountLimit: 'Нельзя указать больше пяти хэштегов',
+  hashtagsRepeats: 'Один и тот же хэштег не может быть использован дважды'
+};
+
 var generateRandomNumber = function (from, to) {
   return Math.round(Math.random() * (to - from) + from);
 };
@@ -179,20 +189,20 @@ var setImageScale = function (scale) {
 
 var validateHashtag = function (tag) {
   if (tag[0] !== HASHTAG_SYMBOL) {
-    return 'Хэштег должен начинаться с # (решётка)'; // @TODO: extract
+    return HashtagsValidationMessages.hashtagStart; // @TODO: extract
   }
   if (tag === HASHTAG_SYMBOL) {
-    return 'Хэштег не может состоять только из одной решётки'; // @TODO: extract
+    return HashtagsValidationMessages.notOneHashSymbol; // @TODO: extract
   }
   if (tag.length > HASHTAG_LENGTH_LIMIT) {
-    return 'Хэштег не должен превышать ' + HASHTAG_LENGTH_LIMIT + ' символов'; // @TODO: extract
+    return HashtagsValidationMessages.hashtagLimit; // @TODO: extract
   }
   if (!/^#[a-zA-Z0-9]+/.test(tag)) {
-    return 'строка после решётки должна состоять из букв и чисел';// @TODO: extract
+    return HashtagsValidationMessages.hashtagBanSymbols;// @TODO: extract
   }
 
   if (tag.split(HASHTAG_SYMBOL).length - 1 > HASHTAG_HASH_LIMIT) {
-    return 'Хэштеги должны разделяться пробелами'; // @TODO: extract
+    return HashtagsValidationMessages.spacesBetweenHashtags; // @TODO: extract
   }
   return '';
 };
@@ -202,7 +212,7 @@ var validateHashtags = function (value) {
   var validationMessage;
 
   if (hashtags.length > HASHTAGS_COUNT_LIMIT) {
-    return 'Нельзя указать больше пяти хэштегов';
+    return HashtagsValidationMessages.hashtagsCountLimit;
   }
 
   if (hashtags.some(function (searchHashtag, seachIndex) {
@@ -210,7 +220,7 @@ var validateHashtags = function (value) {
       return hashtag === searchHashtag && seachIndex !== index;
     });
   })) {
-    return 'Один и тот же хэштег не может быть использован дважды';
+    return HashtagsValidationMessages.hashtagsRepeats;
   }
 
   for (var i = 0; i < hashtags.length; i++) {
@@ -223,28 +233,22 @@ var validateHashtags = function (value) {
   return validationMessage;
 };
 
-var hashtagsInputChangeHandler = function (evt) {
-  hashtagsInputElement.setCustomValidity(validateHashtags(evt.target.value));
-};
-
 var openPopup = function () {
   editImageFormElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
-  scaleControlSmallerElement.addEventListener('click', scaleControlSmallerClickHandler);
-  scaleControlBiggerElement.addEventListener('click', scaleControlBiggerClickHandler);
-  hashtagsInputElement.addEventListener('change', hashtagsInputChangeHandler);
-
-  /// @TODO
+  uploadPopupCloseElement.addEventListener('click', uploadPopupCloseHandler);
   document.addEventListener('keydown', uploadFilePopupKeydownHandler);
 
-  hashtagsInputElement.addEventListener('focus', function () {
-    document.removeEventListener('keydown', uploadFilePopupKeydownHandler);
-  });
+  effectLevelSliderElement.addEventListener('mouseup', effectDepthChangeHandler);
 
-  hashtagsInputElement.addEventListener('blur', function Name () {
-    document.addEventListener('keydown', uploadFilePopupKeydownHandler);
-  });
+  scaleControlSmallerElement.addEventListener('click', scaleControlSmallerClickHandler);
+  scaleControlBiggerElement.addEventListener('click', scaleControlBiggerClickHandler);
+
+  hashtagsInputElement.addEventListener('change', hashtagsInputChangeHandler);
+  hashtagsInputElement.addEventListener('focus', hashtagsInputFocusHandler);
+  hashtagsInputElement.addEventListener('blur', hashtagsInputBlurHandler);
+  // @TODO
 };
 
 var closePopup = function () {
@@ -252,30 +256,35 @@ var closePopup = function () {
   document.body.classList.remove('modal-open');
   uploadFormElement.reset();
 
+  uploadPopupCloseElement.removeEventListener('click', uploadPopupCloseHandler);
   document.removeEventListener('keydown', uploadFilePopupKeydownHandler);
+
+  effectLevelSliderElement.removeEventListener('mouseup', effectDepthChangeHandler);
 
   scaleControlSmallerElement.removeEventListener('click', scaleControlSmallerClickHandler);
   scaleControlBiggerElement.removeEventListener('click', scaleControlBiggerClickHandler);
 
   hashtagsInputElement.removeEventListener('change', hashtagsInputChangeHandler);
+  hashtagsInputElement.removeEventListener('focus', hashtagsInputFocusHandler);
+  hashtagsInputElement.removeEventListener('blur', hashtagsInputBlurHandler);
 
-  /// @TODO
+  // @TODO
 };
 
 var uploadFilePopupKeydownHandler = function (evt) {
   if (evt.key === KEY_ENTER) {
-    openClose();
+    openPopup();
   }
   if (evt.key === KEY_ESC) {
     closePopup();
   }
 };
 
-var uploadFilePopupOpenHandler = function () {
+var uploadFilePopupHandler = function () {
   openPopup();
 };
 
-var uploadFilePopupCloseHandler = function () {
+var uploadPopupCloseHandler = function () {
   closePopup();
 };
 
@@ -304,6 +313,20 @@ var scaleControlBiggerClickHandler = function () {
   if (nextScaleValue <= SCALE_VALUE_MAX) {
     setImageScale(nextScaleValue);
   }
+};
+
+var hashtagsInputChangeHandler = function (evt) {
+  hashtagsInputElement.setCustomValidity(validateHashtags(evt.target.value));
+};
+
+var hashtagsInputFocusHandler = function () {
+  document.removeEventListener('keydown', uploadFilePopupKeydownHandler);
+  // console.log('kek2');
+};
+
+var hashtagsInputBlurHandler = function () {
+  document.addEventListener('keydown', uploadFilePopupKeydownHandler);
+  // console.log('kek');
 };
 
 var photos = generateRandomUserPhotos();
@@ -345,16 +368,14 @@ renderFullSizePhotoElement(photos[0]);
 
 // uploadImageFieldElement.value = '';
 
-
-
 resetImageEffect();
 
 uploadFilePopupElement.addEventListener('change', uploadFilePopupHandler);
 uploadFormElement.addEventListener('change', effectChangeHandler);
 
 
-uploadPopupCloseElement.addEventListener('click', uploadPopupCloseHandler); // @TODO add listener when popun is shown
-effectLevelSliderElement.addEventListener('mouseup', effectDepthChangeHandler); // @TODO add listener when popun is shown
+// uploadPopupCloseElement.addEventListener('click', uploadPopupCloseHandler); // @TODO add listener when popun is shown
+// effectLevelSliderElement.addEventListener('mouseup', effectDepthChangeHandler); // @TODO add listener when popun is shown
 
 // image zooming
 
