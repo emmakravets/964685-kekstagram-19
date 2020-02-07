@@ -314,12 +314,6 @@ var scaleControlSmallerClickHandler = function () {
   var previousScaleValue = currentScale - SCALE_VALUE_STEP;
   var normalizedNextScale = Math.max(previousScaleValue, SCALE_VALUE_MIN);
 
-  /* if (previousScaleValue !== SCALE_VALUE_MAX) {
-    resetImageScale(normalizedNextScale);
-  } else {
-    setImageScale(normalizedNextScale);
-  }
-  */
   setImageScale(normalizedNextScale);
 };
 
