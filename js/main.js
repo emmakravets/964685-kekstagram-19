@@ -187,6 +187,7 @@ var setImageScale = function (scale) {
 var resetImageScale = function () {
   uploadImagePreviewElement.style.transform = 'scale(' + (SCALE_VALUE_DEFAULT / SCALE_VALUE_MAX) + ')';
   scaleControlValueElement.setAttribute('value', SCALE_VALUE_DEFAULT + '%');
+  currentScale = SCALE_VALUE_DEFAULT;
 };
 
 var validateHashtag = function (tag) {
@@ -313,6 +314,12 @@ var scaleControlSmallerClickHandler = function () {
   var previousScaleValue = currentScale - SCALE_VALUE_STEP;
   var normalizedNextScale = Math.max(previousScaleValue, SCALE_VALUE_MIN);
 
+  /* if (previousScaleValue !== SCALE_VALUE_MAX) {
+    resetImageScale(normalizedNextScale);
+  } else {
+    setImageScale(normalizedNextScale);
+  }
+  */
   setImageScale(normalizedNextScale);
 };
 
