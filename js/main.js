@@ -26,6 +26,7 @@ var AVATAR_HEIGHT = '35';
 var AVATAR_URL_TEMPLATE = 'img/avatar-{index}.svg';
 
 var KEY_ESC = 'Escape';
+var KEY_ENTER = 'Enter';
 
 var NO_EFFECT = 'none';
 
@@ -395,7 +396,15 @@ var documentKeydownEscFullSizeImageHandler = function (evt) {
   }
 };
 
-var fullSizeImageHandler = function (evt) {
+var documentKeydownEnterFullSizeImageHandler = function (evt) {
+  if (evt.key === KEY_ENTER) {
+    evt.preventDefault();
+    openFullSizeImage();
+    renderFullSizePhotoElement(photos);
+  }
+};
+
+var fullSizeImageOpenHandler = function (evt) {
   var imageElement = evt.target;
 
   var isFullSizeImage = imageElement.getAttribute('class') === 'picture__img' && imageElement.tagName === 'IMG';
@@ -457,4 +466,5 @@ scaleControlValueElement.setAttribute('value', currentScale + '%');
 uploadFilePopupElement.addEventListener('change', uploadFilePopupHandler);
 uploadFormElement.addEventListener('change', effectChangeHandler);
 
-picturesElement.addEventListener('click', fullSizeImageHandler);
+picturesElement.addEventListener('click', fullSizeImageOpenHandler);
+picturesElement.addEventListener('keydown', documentKeydownEnterFullSizeImageHandler);
