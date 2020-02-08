@@ -401,6 +401,16 @@ var documentKeydownEnterFullSizeImageHandler = function (evt) {
     evt.preventDefault();
     openFullSizeImage();
     renderFullSizePhotoElement(photos);
+
+    var imageElement = evt.target;
+
+    var isFullSizeImage = imageElement.getAttribute('class') === 'picture__img' && imageElement.tagName === 'IMG';
+    if (!isFullSizeImage) {
+      return;
+    }
+
+    fullSizePhotoElement.querySelector('img').src = imageElement.src;
+    fullSizePhotoElement.querySelector('.likes-count').textContent = generateRandomNumber(LIKES_COUNT_MIN, LIKES_COUNT_MAX);
   }
 };
 
