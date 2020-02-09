@@ -37,6 +37,8 @@ var SCALE_VALUE_DEFAULT = 100;
 
 var COMMENT_LENGTH_LIMIT = 140;
 
+var COMMENT_LENGTH_LIMIT = 140;
+
 var Effects = {
   'none': function () {
     return '';
@@ -194,6 +196,7 @@ var hashtagsFocusHandler = function () {
 
 var hashtagsBlurHandler = function () {
   document.addEventListener('keydown', documentKeydownEscPopupHandler);
+
 };
 
 var openPopup = function () {
@@ -206,7 +209,7 @@ var openPopup = function () {
   effectLevelSliderElement.addEventListener('mouseup', effectDepthChangeHandler);
   scaleControlSmallerElement.addEventListener('click', scaleControlSmallerClickHandler);
   scaleControlBiggerElement.addEventListener('click', scaleControlBiggerClickHandler);
-
+  
   window.form.activate(hashtagsFocusHandler, hashtagsBlurHandler);
 
   commentsInputElement.addEventListener('change', commentsInputChangeHandler);
@@ -390,6 +393,7 @@ var uploadImagePreviewElement = uploadImageFieldElement.querySelector('.img-uplo
 var scaleControlSmallerElement = document.querySelector('.scale__control--smaller');
 var scaleControlBiggerElement = document.querySelector('.scale__control--bigger');
 var scaleControlValueElement = document.querySelector('.scale__control--value');
+
 var commentsInputElement = document.querySelector('.text__description');
 
 var currentScale = SCALE_VALUE_DEFAULT;
