@@ -35,13 +35,6 @@ var SCALE_VALUE_MAX = 100;
 var SCALE_VALUE_MIN = 25;
 var SCALE_VALUE_DEFAULT = 100;
 
-var HASHTAG_SYMBOL = '#';
-var HASHTAG_LENGTH_LIMIT = 20;
-var HASHTAG_HASH_LIMIT = 1;
-
-var HASHTAGS_SEPARATOR = ' ';
-var HASHTAGS_COUNT_LIMIT = 5;
-
 var COMMENT_LENGTH_LIMIT = 140;
 
 var Effects = {
@@ -62,18 +55,7 @@ var Effects = {
   },
   'heat': function (value) {
     return 'brightness' + '(' + calculateEffectDepth((value / 100), 1, 3) + ')';
-  },
-};
-
-var HashtagsValidationMessages = {
-  hashtagStart: 'Хэштег должен начинаться с # (решётка)',
-  notOneHashSymbol: 'Хэштег не может состоять только из одной решётки',
-  hashtagLimit: 'Хэштег не должен превышать ' + HASHTAG_LENGTH_LIMIT + ' символов',
-  hashtagBanSymbols: 'Строка после решётки должна состоять только из букв и чисел. Использование других символов недопустимо',
-  hashtagCase: 'Хэштеги нечувствительны к регистру: #ХэшТег и #хэштег считаются одним и тем же тегом',
-  spacesBetweenHashtags: 'Хэштеги должны разделяться пробелами',
-  hashtagsCountLimit: 'Нельзя указать больше пяти хэштегов',
-  hashtagsRepeats: 'Один и тот же хэштег не может быть использован дважды'
+  }
 };
 
 var commentValidateMessage = 'Длина комментария не может составлять больше ' + COMMENT_LENGTH_LIMIT + ' символов';
@@ -198,72 +180,20 @@ var resetImageScale = function () {
   currentScale = SCALE_VALUE_DEFAULT;
 };
 
-var validateHashtag = function (tag) {
-  if (tag[0] !== HASHTAG_SYMBOL) {
-    return HashtagsValidationMessages.hashtagStart;
-  }
-  if (tag === HASHTAG_SYMBOL) {
-    return HashtagsValidationMessages.notOneHashSymbol;
-  }
-  if (tag.length > HASHTAG_LENGTH_LIMIT) {
-    return HashtagsValidationMessages.hashtagLimit;
-  }
-  if (!/^#[a-zA-Z0-9]+/.test(tag)) {
-    return HashtagsValidationMessages.hashtagBanSymbols;
-  }
-  if (tag.split(HASHTAG_SYMBOL).length - 1 > HASHTAG_HASH_LIMIT) {
-    return HashtagsValidationMessages.spacesBetweenHashtags;
-  }
-  return '';
-};
-
-var hasAnyHashtagRepeat = function (hashtags) {
-  return hashtags.some(function (searchHashtag, seachIndex) {
-    return hashtags.some(function (hashtag, index) {
-      return hashtag === searchHashtag && seachIndex !== index;
-    });
-  });
-};
-
-var hasRegisterHashtagRepeat = function (hashtags) {
-  return hashtags.some(function (searchHashtag, seachIndex) {
-    return hashtags.some(function (hashtag, index) {
-      return hashtag.toLowerCase() === searchHashtag.toLowerCase() && seachIndex !== index;
-    });
-  });
-};
-
-var validateHashtags = function (value) {
-  var hashtags = value.split(HASHTAGS_SEPARATOR);
-  var validationMessage;
-
-  if (hashtags.length > HASHTAGS_COUNT_LIMIT) {
-    return HashtagsValidationMessages.hashtagsCountLimit;
-  }
-
-  if (hasAnyHashtagRepeat(hashtags)) {
-    return HashtagsValidationMessages.hashtagsRepeats;
-  }
-
-  if (hasRegisterHashtagRepeat(hashtags)) {
-    return HashtagsValidationMessages.hashtagCase;
-  }
-
-  for (var i = 0; i < hashtags.length; i++) {
-    validationMessage = validateHashtag(hashtags[i]);
-    if (!validationMessage) {
-      return validationMessage;
-    }
-  }
-
-  return validationMessage;
-};
 
 var validateComments = function (comment) {
   if (comment.length > COMMENT_LENGTH_LIMIT) {
     return commentValidateMessage;
   }
   return '';
+};
+
+var hashtagsFocusHandler = function () {
+  document.removeEventListener('keydown', documentKeydownEscPopupHandler);
+};
+
+var hashtagsBlurHandler = function () {
+  document.addEventListener('keydown', documentKeydownEscPopupHandler);
 };
 
 var openPopup = function () {
@@ -275,11 +205,10 @@ var openPopup = function () {
 
   effectLevelSliderElement.addEventListener('mouseup', effectDepthChangeHandler);
   scaleControlSmallerElement.addEventListener('click', scaleControlSmallerClickHandler);
+
   scaleControlBiggerElement.addEventListener('click', scaleControlBiggerClickHandler);
 
-  hashtagsInputElement.addEventListener('change', hashtagsInputChangeHandler);
-  hashtagsInputElement.addEventListener('focus', hashtagsInputFocusHandler);
-  hashtagsInputElement.addEventListener('blur', hashtagsInputBlurHandler);
+  window.form.activate(hashtagsFocusHandler, hashtagsBlurHandler);
 
   commentsInputElement.addEventListener('change', commentsInputChangeHandler);
   commentsInputElement.addEventListener('focus', commentsInputFocusHandler);
@@ -298,9 +227,7 @@ var closePopup = function () {
   scaleControlSmallerElement.removeEventListener('click', scaleControlSmallerClickHandler);
   scaleControlBiggerElement.removeEventListener('click', scaleControlBiggerClickHandler);
 
-  hashtagsInputElement.removeEventListener('change', hashtagsInputChangeHandler);
-  hashtagsInputElement.removeEventListener('focus', hashtagsInputFocusHandler);
-  hashtagsInputElement.removeEventListener('blur', hashtagsInputBlurHandler);
+  window.form.deactivate();
 
   commentsInputElement.removeEventListener('change', commentsInputChangeHandler);
   commentsInputElement.removeEventListener('focus', commentsInputFocusHandler);
@@ -373,18 +300,6 @@ var scaleControlBiggerClickHandler = function () {
   var normalizedNextScale = Math.min(nextScaleValue, SCALE_VALUE_MAX);
 
   setImageScale(normalizedNextScale);
-};
-
-var hashtagsInputChangeHandler = function (evt) {
-  hashtagsInputElement.setCustomValidity(validateHashtags(evt.target.value));
-};
-
-var hashtagsInputFocusHandler = function () {
-  document.removeEventListener('keydown', documentKeydownEscPopupHandler);
-};
-
-var hashtagsInputBlurHandler = function () {
-  document.addEventListener('keydown', documentKeydownEscPopupHandler);
 };
 
 var commentsInputChangeHandler = function (evt) {
@@ -476,7 +391,6 @@ var uploadImagePreviewElement = uploadImageFieldElement.querySelector('.img-uplo
 var scaleControlSmallerElement = document.querySelector('.scale__control--smaller');
 var scaleControlBiggerElement = document.querySelector('.scale__control--bigger');
 var scaleControlValueElement = document.querySelector('.scale__control--value');
-var hashtagsInputElement = document.querySelector('.text__hashtags');
 var commentsInputElement = document.querySelector('.text__description');
 
 var currentScale = SCALE_VALUE_DEFAULT;
