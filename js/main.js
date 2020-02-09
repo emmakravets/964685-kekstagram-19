@@ -28,34 +28,6 @@ var AVATAR_URL_TEMPLATE = 'img/avatar-{index}.svg';
 var KEY_ESC = 'Escape';
 var KEY_ENTER = 'Enter';
 
-var NO_EFFECT = 'none';
-
-var SCALE_VALUE_STEP = 25;
-var SCALE_VALUE_MAX = 100;
-var SCALE_VALUE_MIN = 25;
-var SCALE_VALUE_DEFAULT = 100;
-
-var Effects = {
-  'none': function () {
-    return '';
-  },
-  'chrome': function (value) {
-    return 'grayscale' + '(' + (value / 100) + ')';
-  },
-  'sepia': function (value) {
-    return 'sepia' + '(' + (value / 100) + ')';
-  },
-  'marvin': function (value) {
-    return 'invert' + '(' + value + '%)';
-  },
-  'phobos': function (value) {
-    return 'blur' + '(' + calculateEffectDepth((value / 100), 0, 3) + 'px)';
-  },
-  'heat': function (value) {
-    return 'brightness' + '(' + calculateEffectDepth((value / 100), 1, 3) + ')';
-  }
-};
-
 var generateRandomNumber = function (from, to) {
   return Math.round(Math.random() * (to - from) + from);
 };
@@ -150,39 +122,12 @@ var renderFullSizePhotoElement = function (photo) {
   renderCommentsElement(generateRandomComments());
 };
 
-var calculateEffectDepth = function (percent, from, to) {
-  return (to - from) * percent + from;
-};
-
-var resetImageEffect = function () {
-  uploadImagePreviewElement.style.filter = '';
-  effectLevelFieldsetElement.style.display = 'none';
-};
-
-var setImageEffect = function (effect) {
-  uploadImagePreviewElement.style.filter = Effects[effect](effectLevelValueElement.value);
-  effectLevelFieldsetElement.style.display = 'block';
-};
-
-var setImageScale = function (scale) {
-  uploadImagePreviewElement.style.transform = 'scale(' + (scale / SCALE_VALUE_MAX) + ')';
-  scaleControlValueElement.setAttribute('value', scale + '%');
-  currentScale = scale;
-};
-
-var resetImageScale = function () {
-  uploadImagePreviewElement.style.transform = 'scale(' + (SCALE_VALUE_DEFAULT / SCALE_VALUE_MAX) + ')';
-  scaleControlValueElement.setAttribute('value', SCALE_VALUE_DEFAULT + '%');
-  currentScale = SCALE_VALUE_DEFAULT;
-};
-
 var hashtagsFocusHandler = function () {
   document.removeEventListener('keydown', documentKeydownEscPopupHandler);
 };
 
 var hashtagsBlurHandler = function () {
   document.addEventListener('keydown', documentKeydownEscPopupHandler);
-
 };
 
 var openPopup = function () {
@@ -192,12 +137,10 @@ var openPopup = function () {
   uploadPopupCloseElement.addEventListener('click', uploadPopupCloseHandler);
   document.addEventListener('keydown', documentKeydownEscPopupHandler);
 
-  effectLevelSliderElement.addEventListener('mouseup', effectDepthChangeHandler);
-  scaleControlSmallerElement.addEventListener('click', scaleControlSmallerClickHandler);
-  scaleControlBiggerElement.addEventListener('click', scaleControlBiggerClickHandler);
-
-  window.form.activate(hashtagsFocusHandler, hashtagsBlurHandler);
-  window.form.comments.activate(commentsFocusHandler, commentsBlurHandler);
+  window.formScale.activate();
+  window.formEffect.activate();
+  window.formHashtags.activate(hashtagsFocusHandler, hashtagsBlurHandler);
+  window.formComments.activate(commentsFocusHandler, commentsBlurHandler);
 };
 
 var closePopup = function () {
@@ -208,15 +151,10 @@ var closePopup = function () {
   uploadPopupCloseElement.removeEventListener('click', uploadPopupCloseHandler);
   document.removeEventListener('keydown', documentKeydownEscPopupHandler);
 
-  effectLevelSliderElement.removeEventListener('mouseup', effectDepthChangeHandler);
-  scaleControlSmallerElement.removeEventListener('click', scaleControlSmallerClickHandler);
-  scaleControlBiggerElement.removeEventListener('click', scaleControlBiggerClickHandler);
-
-  window.form.deactivate();
-  window.form.comments.deactivate();
-
-  resetImageEffect();
-  resetImageScale();
+  window.formScale.deactivate();
+  window.formEffect.deactivate();
+  window.formHashtags.deactivate();
+  window.formComments.deactivate();
 };
 
 var openFullSizeImage = function () {
@@ -247,41 +185,6 @@ var uploadFilePopupHandler = function () {
 
 var uploadPopupCloseHandler = function () {
   closePopup();
-};
-
-var effectDepthChangeHandler = function () {
-  var computedEffectDepth = Math.round((effectLevelDepthElement.clientWidth * 100) / effectLevelLineElement.clientWidth);
-  effectLevelValueElement.value = computedEffectDepth;
-};
-
-var effectChangeHandler = function (evt) {
-  var element = evt.target;
-  var isEffectElement = element.getAttribute('name') === 'effect' && element.tagName === 'INPUT';
-  if (!isEffectElement) {
-    return;
-  }
-
-  var effectName = element.getAttribute('id').split('-');
-
-  if (effectName[1] === NO_EFFECT) {
-    resetImageEffect();
-  } else {
-    setImageEffect(effectName[1]);
-  }
-};
-
-var scaleControlSmallerClickHandler = function () {
-  var previousScaleValue = currentScale - SCALE_VALUE_STEP;
-  var normalizedNextScale = Math.max(previousScaleValue, SCALE_VALUE_MIN);
-
-  setImageScale(normalizedNextScale);
-};
-
-var scaleControlBiggerClickHandler = function () {
-  var nextScaleValue = currentScale + SCALE_VALUE_STEP;
-  var normalizedNextScale = Math.min(nextScaleValue, SCALE_VALUE_MAX);
-
-  setImageScale(normalizedNextScale);
 };
 
 var commentsFocusHandler = function () {
@@ -359,29 +262,12 @@ var uploadFilePopupElement = uploadImageFieldElement.querySelector('#upload-file
 var uploadPopupCloseElement = uploadImageFieldElement.querySelector('#upload-cancel');
 var editImageFormElement = uploadImageFieldElement.querySelector('.img-upload__overlay');
 
-var effectLevelFieldsetElement = uploadImageFieldElement.querySelector('.effect-level');
-var effectLevelSliderElement = effectLevelFieldsetElement.querySelector('.effect-level__pin');
-var effectLevelValueElement = effectLevelFieldsetElement.querySelector('.effect-level__value');
-var effectLevelLineElement = effectLevelFieldsetElement.querySelector('.effect-level__line');
-var effectLevelDepthElement = effectLevelFieldsetElement.querySelector('.effect-level__depth');
-var uploadImagePreviewElement = uploadImageFieldElement.querySelector('.img-upload__preview');
-
-var scaleControlSmallerElement = document.querySelector('.scale__control--smaller');
-var scaleControlBiggerElement = document.querySelector('.scale__control--bigger');
-var scaleControlValueElement = document.querySelector('.scale__control--value');
-
-var currentScale = SCALE_VALUE_DEFAULT;
-
 commentsCountElement.classList.add('hidden');
 commentsLoaderElement.classList.add('hidden');
 
 renderPhotos(photos);
 
-resetImageEffect();
-scaleControlValueElement.setAttribute('value', currentScale + '%');
-
 uploadFilePopupElement.addEventListener('change', uploadFilePopupHandler);
-uploadFormElement.addEventListener('change', effectChangeHandler);
 
 picturesElement.addEventListener('click', picturesClickHandler);
 picturesElement.addEventListener('keydown', picturesKeydownHandler);
