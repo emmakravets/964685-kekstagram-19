@@ -35,13 +35,6 @@ var SCALE_VALUE_MAX = 100;
 var SCALE_VALUE_MIN = 25;
 var SCALE_VALUE_DEFAULT = 100;
 
-<<<<<<< HEAD
-=======
-var COMMENT_LENGTH_LIMIT = 140;
-
-var COMMENT_LENGTH_LIMIT = 140;
-
->>>>>>> 0a73ad75fc12611b667cdb958d894b2fd77c6f76
 var Effects = {
   'none': function () {
     return '';
@@ -202,7 +195,7 @@ var openPopup = function () {
   effectLevelSliderElement.addEventListener('mouseup', effectDepthChangeHandler);
   scaleControlSmallerElement.addEventListener('click', scaleControlSmallerClickHandler);
   scaleControlBiggerElement.addEventListener('click', scaleControlBiggerClickHandler);
-  
+
   window.form.activate(hashtagsFocusHandler, hashtagsBlurHandler);
   window.form.comments.activate(commentsFocusHandler, commentsBlurHandler);
 };
@@ -376,11 +369,6 @@ var uploadImagePreviewElement = uploadImageFieldElement.querySelector('.img-uplo
 var scaleControlSmallerElement = document.querySelector('.scale__control--smaller');
 var scaleControlBiggerElement = document.querySelector('.scale__control--bigger');
 var scaleControlValueElement = document.querySelector('.scale__control--value');
-<<<<<<< HEAD
-=======
-
-var commentsInputElement = document.querySelector('.text__description');
->>>>>>> 0a73ad75fc12611b667cdb958d894b2fd77c6f76
 
 var currentScale = SCALE_VALUE_DEFAULT;
 
