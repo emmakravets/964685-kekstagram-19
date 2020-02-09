@@ -76,7 +76,7 @@ var HashtagsValidationMessages = {
   hashtagsRepeats: 'Один и тот же хэштег не может быть использован дважды'
 };
 
-var commentValidateMessage = 'Длина комментария не может составлять больше 140 символов';
+var commentValidateMessage = 'Длина комментария не может составлять больше ' + COMMENT_LENGTH_LIMIT + ' символов';
 
 var generateRandomNumber = function (from, to) {
   return Math.round(Math.random() * (to - from) + from);
