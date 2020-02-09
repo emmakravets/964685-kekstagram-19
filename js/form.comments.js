@@ -33,7 +33,7 @@
     }
   };
 
-  window.form.comments = {
+  window.formComments = {
     activate: function (focusCallback, blurCallback) {
       commentsFocusCallback = focusCallback;
       commentsBlurCallback = blurCallback;
@@ -43,6 +43,9 @@
       commentsInputElement.addEventListener('blur', commentsInputBlurHandler);
     },
     deactivate: function () {
+      commentsFocusCallback = null;
+      commentsBlurCallback = null;
+
       commentsInputElement.removeEventListener('change', commentsInputChangeHandler);
       commentsInputElement.removeEventListener('focus', commentsInputFocusHandler);
       commentsInputElement.removeEventListener('blur', commentsInputBlurHandler);
