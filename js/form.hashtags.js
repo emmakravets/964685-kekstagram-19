@@ -87,14 +87,14 @@
   };
 
   var hashtagsInputFocusHandler = function () {
-    if (typeof hashtagsFocusCallback === "function") {
-      hashtagsFocusCallback()
+    if (typeof hashtagsFocusCallback === 'function') {
+      hashtagsFocusCallback();
     }
   };
 
   var hashtagsInputBlurHandler = function () {
-    if (typeof hashtagsBlurCallback === "function") {
-      hashtagsBlurCallback()
+    if (typeof hashtagsBlurCallback === 'function') {
+      hashtagsBlurCallback();
     }
   };
 
