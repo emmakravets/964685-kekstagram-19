@@ -35,8 +35,6 @@ var SCALE_VALUE_MAX = 100;
 var SCALE_VALUE_MIN = 25;
 var SCALE_VALUE_DEFAULT = 100;
 
-var COMMENT_LENGTH_LIMIT = 140;
-
 var Effects = {
   'none': function () {
     return '';
@@ -57,8 +55,6 @@ var Effects = {
     return 'brightness' + '(' + calculateEffectDepth((value / 100), 1, 3) + ')';
   }
 };
-
-var commentValidateMessage = 'Длина комментария не может составлять больше ' + COMMENT_LENGTH_LIMIT + ' символов';
 
 var generateRandomNumber = function (from, to) {
   return Math.round(Math.random() * (to - from) + from);
@@ -180,14 +176,6 @@ var resetImageScale = function () {
   currentScale = SCALE_VALUE_DEFAULT;
 };
 
-
-var validateComments = function (comment) {
-  if (comment.length > COMMENT_LENGTH_LIMIT) {
-    return commentValidateMessage;
-  }
-  return '';
-};
-
 var hashtagsFocusHandler = function () {
   document.removeEventListener('keydown', documentKeydownEscPopupHandler);
 };
@@ -208,10 +196,7 @@ var openPopup = function () {
   scaleControlBiggerElement.addEventListener('click', scaleControlBiggerClickHandler);
 
   window.form.activate(hashtagsFocusHandler, hashtagsBlurHandler);
-
-  commentsInputElement.addEventListener('change', commentsInputChangeHandler);
-  commentsInputElement.addEventListener('focus', commentsInputFocusHandler);
-  commentsInputElement.addEventListener('blur', commentsInputBlurHandler);
+  window.form.comments.activate(commentsFocusHandler, commentsBlurHandler);
 };
 
 var closePopup = function () {
@@ -227,10 +212,7 @@ var closePopup = function () {
   scaleControlBiggerElement.removeEventListener('click', scaleControlBiggerClickHandler);
 
   window.form.deactivate();
-
-  commentsInputElement.removeEventListener('change', commentsInputChangeHandler);
-  commentsInputElement.removeEventListener('focus', commentsInputFocusHandler);
-  commentsInputElement.removeEventListener('blur', commentsInputBlurHandler);
+  window.form.comments.deactivate();
 
   resetImageEffect();
   resetImageScale();
@@ -301,15 +283,11 @@ var scaleControlBiggerClickHandler = function () {
   setImageScale(normalizedNextScale);
 };
 
-var commentsInputChangeHandler = function (evt) {
-  commentsInputElement.setCustomValidity(validateComments(evt.target.value));
-};
-
-var commentsInputFocusHandler = function () {
+var commentsFocusHandler = function () {
   document.removeEventListener('keydown', documentKeydownEscPopupHandler);
 };
 
-var commentsInputBlurHandler = function () {
+var commentsBlurHandler = function () {
   document.addEventListener('keydown', documentKeydownEscPopupHandler);
 };
 
@@ -390,7 +368,6 @@ var uploadImagePreviewElement = uploadImageFieldElement.querySelector('.img-uplo
 var scaleControlSmallerElement = document.querySelector('.scale__control--smaller');
 var scaleControlBiggerElement = document.querySelector('.scale__control--bigger');
 var scaleControlValueElement = document.querySelector('.scale__control--value');
-var commentsInputElement = document.querySelector('.text__description');
 
 var currentScale = SCALE_VALUE_DEFAULT;
 
