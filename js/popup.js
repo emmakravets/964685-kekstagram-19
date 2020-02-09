@@ -5,5 +5,5 @@
   window.popup = {
     open: function () {},
     close: function () {}
-  }
+  };
 })();

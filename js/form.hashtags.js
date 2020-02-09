@@ -9,7 +9,7 @@
   var HASHTAGS_COUNT_LIMIT = 5;
 
   var HashtagsValidationMessages = {
-    hashtagStart: 'Хэштег должен начинаться с # (решётка)',
+    hashtagStart: 'Хэштег доfлжен начинаться с # (решётка)',
     notOneHashSymbol: 'Хэштег не может состоять только из одной решётки',
     hashtagLimit: 'Хэштег не должен превышать ' + HASHTAG_LENGTH_LIMIT + ' символов',
     hashtagBanSymbols: 'Строка после решётки должна состоять только из букв и чисел. Использование других символов недопустимо',
