@@ -9,7 +9,7 @@
   var HASHTAGS_COUNT_LIMIT = 5;
 
   var HashtagsValidationMessages = {
-    hashtagStart: 'Хэштег доfлжен начинаться с # (решётка)',
+    hashtagStart: 'Хэштег должен начинаться с # (решётка)',
     notOneHashSymbol: 'Хэштег не может состоять только из одной решётки',
     hashtagLimit: 'Хэштег не должен превышать ' + HASHTAG_LENGTH_LIMIT + ' символов',
     hashtagBanSymbols: 'Строка после решётки должна состоять только из букв и чисел. Использование других символов недопустимо',
@@ -98,7 +98,7 @@
     }
   };
 
-  window.form = {
+  window.formHashtags = {
     activate: function (focusCallback, blurCallback) {
       hashtagsFocusCallback = focusCallback;
       hashtagsBlurCallback = blurCallback;
@@ -108,9 +108,13 @@
       hashtagsInputElement.addEventListener('blur', hashtagsInputBlurHandler);
     },
     deactivate: function () {
+      hashtagsFocusCallback = null;
+      hashtagsBlurCallback = null;
+
       hashtagsInputElement.removeEventListener('change', hashtagsInputChangeHandler);
       hashtagsInputElement.removeEventListener('focus', hashtagsInputFocusHandler);
       hashtagsInputElement.removeEventListener('blur', hashtagsInputBlurHandler);
     }
   };
 })();
+
