@@ -52,41 +52,6 @@ var renderFullSizePhotoElement = function (photo) {
   renderCommentsElement(window.generate.generateRandomComments());
 };
 
-var hashtagsFocusHandler = function () {
-  document.removeEventListener('keydown', documentKeydownEscPopupHandler);
-};
-
-var hashtagsBlurHandler = function () {
-  document.addEventListener('keydown', documentKeydownEscPopupHandler);
-};
-
-var openPopup = function () {
-  editImageFormElement.classList.remove('hidden');
-  document.body.classList.add('modal-open');
-
-  uploadPopupCloseElement.addEventListener('click', uploadPopupCloseHandler);
-  document.addEventListener('keydown', documentKeydownEscPopupHandler);
-
-  window.formScale.activate();
-  window.formEffect.activate();
-  window.formHashtags.activate(hashtagsFocusHandler, hashtagsBlurHandler);
-  window.formComments.activate(commentsFocusHandler, commentsBlurHandler);
-};
-
-var closePopup = function () {
-  editImageFormElement.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  uploadFormElement.reset();
-
-  uploadPopupCloseElement.removeEventListener('click', uploadPopupCloseHandler);
-  document.removeEventListener('keydown', documentKeydownEscPopupHandler);
-
-  window.formScale.deactivate();
-  window.formEffect.deactivate();
-  window.formHashtags.deactivate();
-  window.formComments.deactivate();
-};
-
 var openFullSizeImage = function () {
   fullSizePhotoElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
@@ -103,26 +68,8 @@ var closeFullSizeImage = function () {
   document.removeEventListener('keydown', documentKeydownEscFullSizeImageHandler);
 };
 
-var documentKeydownEscPopupHandler = function (evt) {
-  if (evt.key === KEY_ESC) {
-    closePopup();
-  }
-};
-
 var uploadFilePopupHandler = function () {
-  openPopup();
-};
-
-var uploadPopupCloseHandler = function () {
-  closePopup();
-};
-
-var commentsFocusHandler = function () {
-  document.removeEventListener('keydown', documentKeydownEscPopupHandler);
-};
-
-var commentsBlurHandler = function () {
-  document.addEventListener('keydown', documentKeydownEscPopupHandler);
+  window.popup.open();
 };
 
 var documentKeydownEscFullSizeImageHandler = function (evt) {
@@ -185,11 +132,9 @@ var fullSizePhotoElement = document.querySelector('.big-picture');
 var fullSizePhotoCloseElement = document.querySelector('.big-picture__cancel');
 var commentsCountElement = document.querySelector('.social__comment-count');
 var commentsLoaderElement = document.querySelector('.comments-loader');
-var uploadFormElement = document.querySelector('.img-upload__form');
+// var uploadFormElement = document.querySelector('.img-upload__form');
 var uploadImageFieldElement = document.querySelector('.img-upload');
 var uploadFilePopupElement = uploadImageFieldElement.querySelector('#upload-file');
-var uploadPopupCloseElement = uploadImageFieldElement.querySelector('#upload-cancel');
-var editImageFormElement = uploadImageFieldElement.querySelector('.img-upload__overlay');
 
 commentsCountElement.classList.add('hidden');
 commentsLoaderElement.classList.add('hidden');
