@@ -19,13 +19,6 @@
     currentScale = SCALE_VALUE_DEFAULT;
   };
 
-  var uploadImagePreviewElement = document.querySelector('.img-upload__preview');
-  var scaleControlSmallerElement = document.querySelector('.scale__control--smaller');
-  var scaleControlBiggerElement = document.querySelector('.scale__control--bigger');
-  var scaleControlValueElement = document.querySelector('.scale__control--value');
-
-  var currentScale = SCALE_VALUE_DEFAULT;
-
   var scaleControlSmallerClickHandler = function () {
     var previousScaleValue = currentScale - SCALE_VALUE_STEP;
     var normalizedNextScale = Math.max(previousScaleValue, SCALE_VALUE_MIN);
@@ -39,6 +32,13 @@
 
     setImageScale(normalizedNextScale);
   };
+
+  var uploadImagePreviewElement = document.querySelector('.img-upload__preview');
+  var scaleControlSmallerElement = document.querySelector('.scale__control--smaller');
+  var scaleControlBiggerElement = document.querySelector('.scale__control--bigger');
+  var scaleControlValueElement = document.querySelector('.scale__control--value');
+
+  var currentScale = SCALE_VALUE_DEFAULT;
 
   scaleControlValueElement.setAttribute('value', currentScale + '%');
 

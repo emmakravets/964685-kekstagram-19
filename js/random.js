@@ -5,10 +5,12 @@
     return Math.round(Math.random() * (to - from) + from);
   };
 
-  window.util = {
+  var getRandomItem = function (items) {
+    return items[generateRandomNumber(0, items.length - 1)];
+  }
+
+  window.random = {
     generateRandomNumber: generateRandomNumber,
-    getRandomItem: function (items) {
-      return items[generateRandomNumber(0, items.length - 1)];
-    }
+    getRandomItem: getRandomItem
   };
 })();

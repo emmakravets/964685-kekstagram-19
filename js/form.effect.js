@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   var NO_EFFECT = 'none';
 
   var Effects = {
@@ -59,12 +58,12 @@
       return;
     }
 
-    var effectName = element.getAttribute('id').split('-');
+    var effectName = element.getAttribute('id').split('-')[1];
 
-    if (effectName[1] === NO_EFFECT) {
+    if (effectName === NO_EFFECT) {
       resetImageEffect();
     } else {
-      setImageEffect(effectName[1]);
+      setImageEffect(effectName);
     }
   };
 

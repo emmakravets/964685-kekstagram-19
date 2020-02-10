@@ -30,8 +30,8 @@
   var generateRandomComment = function () {
     return {
       avatar: AVATAR_URL_TEMPLATE.replace('{index}', generateRandomNumber(1, 6)),
-      message: window.util.getRandomItem(COMMENTS_MESSAGES),
-      name: window.util.getRandomItem(USER_NAMES)
+      message: window.random.getRandomItem(COMMENTS_MESSAGES),
+      name: window.random.getRandomItem(USER_NAMES)
     };
   };
 
@@ -45,8 +45,8 @@
   };
 
   window.generate = {
-    generateRandomComments: generateRandomComments,
-    generateRandomUserPhotos: function () {
+    generateRandomComments: generateRandomComments, // ?
+    generateRandomPhotos: function () {
       var photos = [];
       for (var i = 0; i < USER_PHOTO_LIMIT; i++) {
         photos.push({
