@@ -14,6 +14,8 @@ var openPopupCallback = function () {
   window.formEffect.activate();
   window.formHashtags.activate(hashtagsFocusHandler, hashtagsBlurHandler);
   window.formComments.activate(commentsFocusHandler, commentsBlurHandler);
+
+  document.addEventListener('keydown', documentKeydownEscPopupHandler);
 };
 
 var closePopupCallback = function () {
@@ -21,11 +23,13 @@ var closePopupCallback = function () {
   window.formEffect.deactivate();
   window.formHashtags.deactivate();
   window.formComments.deactivate();
+
+  document.removeEventListener('keydown', documentKeydownEscPopupHandler);
 };
 
 var documentKeydownEscPopupHandler = function (evt) {
-  if (evt.key === KEY_ESC) {
-    closePopup();
+  if (evt.key === window.popupForm.isEscPressed) {
+    window.popupForm.close();
   }
 };
 

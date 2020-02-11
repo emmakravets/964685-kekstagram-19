@@ -13,7 +13,7 @@
     }
     //
 
-    document.addEventListener('keydown', documentKeydownEscPopupHandler);
+    // document.addEventListener('keydown', documentKeydownEscPopupHandler);
   };
 
   var closePopup = function () {
@@ -27,18 +27,18 @@
     }
 
     //
-    document.removeEventListener('keydown', documentKeydownEscPopupHandler);
+    // document.removeEventListener('keydown', documentKeydownEscPopupHandler);
   };
 
   var uploadPopupCloseHandler = function () {
     closePopup();
   };
 
-  var documentKeydownEscPopupHandler = function (evt) {
+  /* var documentKeydownEscPopupHandler = function (evt) {
     if (evt.key === KEY_ESC) {
       closePopup();
     }
-  };
+  }; */
 
   var uploadFilePopupHandler = function () {
     openPopup();
@@ -63,5 +63,7 @@
       closePopupCallback = null;
       uploadFileElement.removeEventListener('change', uploadFilePopupHandler);
     },
+    isEscPressed: KEY_ESC,
+    close: closePopup
   };
 })();
