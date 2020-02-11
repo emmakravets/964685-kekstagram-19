@@ -1,58 +1,48 @@
 'use strict';
 
-var KEY_ENTER = 'Enter';
+var randomPhotos = window.generate.generateRandomPhotos();
 
-var uploadFilePopupHandler = function () {
-  window.popup.open();
+var photoSelectHandler = function (index) {
+  window.photoPopup.open(randomPhotos[index]);
 };
 
+window.photos.activate(photoSelectHandler);
+window.photos.render(randomPhotos);
 
-var picturesKeydownHandler = function (evt) {
-  if (evt.key !== KEY_ENTER) {
-    return;
-  }
-
-  evt.preventDefault();
-  openFullSizeImage();
-
-  var linkElement = evt.target;
-  var isFullSizeImage = linkElement.getAttribute('class') === 'picture' && linkElement.tagName === 'A';
-  if (!isFullSizeImage) {
-    return;
-  }
-
-  var index = imageElement.getAttribute('data-index');
-  window.popupPhoto.open(photos[index]);
+var openPopupCallback = function () {
+  window.formScale.activate();
+  window.formEffect.activate();
+  window.formHashtags.activate(hashtagsFocusHandler, hashtagsBlurHandler);
+  window.formComments.activate(commentsFocusHandler, commentsBlurHandler);
 };
 
-var picturesClickHandler = function (evt) {
-  var imageElement = evt.target;
-  var isFullSizeImage = imageElement.getAttribute('class') === 'picture__img' && imageElement.tagName === 'IMG';
-  if (!isFullSizeImage) {
-    return;
-  }
-
-  evt.preventDefault();
-
-  var index = imageElement.getAttribute('data-index');
-  window.photoPopup.open(photos[index]);
+var closePopupCallback = function () {
+  window.formScale.deactivate();
+  window.formEffect.deactivate();
+  window.formHashtags.deactivate();
+  window.formComments.deactivate();
 };
 
-var photos = window.generate.generateRandomPhotos();
+var documentKeydownEscPopupHandler = function (evt) {
+  if (evt.key === KEY_ESC) {
+    closePopup();
+  }
+};
 
-var picturesElement = document.querySelector('.pictures');
-var commentsCountElement = document.querySelector('.social__comment-count');
-var commentsLoaderElement = document.querySelector('.comments-loader');
-// var uploadFormElement = document.querySelector('.img-upload__form');
-var uploadImageFieldElement = document.querySelector('.img-upload');
-var uploadFilePopupElement = uploadImageFieldElement.querySelector('#upload-file');
+var hashtagsFocusHandler = function () {
+  document.removeEventListener('keydown', documentKeydownEscPopupHandler);
+};
 
-commentsCountElement.classList.add('hidden');
-commentsLoaderElement.classList.add('hidden');
+var hashtagsBlurHandler = function () {
+  document.addEventListener('keydown', documentKeydownEscPopupHandler);
+};
 
-window.photo.renderPhotos(photos);
+var commentsFocusHandler = function () {
+  document.removeEventListener('keydown', documentKeydownEscPopupHandler);
+};
 
-uploadFilePopupElement.addEventListener('change', uploadFilePopupHandler);
+var commentsBlurHandler = function () {
+  document.addEventListener('keydown', documentKeydownEscPopupHandler);
+};
 
-picturesElement.addEventListener('click', picturesClickHandler);
-picturesElement.addEventListener('keydown', picturesKeydownHandler);
+window.popupForm.activate(openPopupCallback, closePopupCallback);

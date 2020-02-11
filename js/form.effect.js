@@ -51,7 +51,7 @@
     effectLevelValueElement.value = computedEffectDepth;
   };
 
-  var effectChangeHandler = function (evt) {
+  var effectLevelChangeHandler = function (evt) {
     var element = evt.target;
     var isEffectElement = element.getAttribute('name') === 'effect' && element.tagName === 'INPUT';
     if (!isEffectElement) {
@@ -67,15 +67,16 @@
     }
   };
 
-  uploadFormElement.addEventListener('change', effectChangeHandler);
   resetImageEffect();
 
   window.formEffect = {
     activate: function () {
       effectLevelSliderElement.addEventListener('mouseup', effectDepthChangeHandler);
+      uploadFormElement.addEventListener('change', effectLevelChangeHandler);
     },
     deactivate: function () {
       effectLevelSliderElement.removeEventListener('mouseup', effectDepthChangeHandler);
+      uploadFormElement.removeEventListener('change', effectLevelChangeHandler);
       resetImageEffect();
     }
   };
