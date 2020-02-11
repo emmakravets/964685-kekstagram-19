@@ -3,14 +3,9 @@
 (function () {
   var KEY_ESC = 'Escape';
 
-  var randomPhotos = window.generate.generateRandomPhotos();
-
-  var photoSelectHandler = function (index) {
+  var photoSelectCallback = function (index) {
     window.photoPopup.open(randomPhotos[index]);
   };
-
-  window.photos.activate(photoSelectHandler);
-  window.photos.render(randomPhotos);
 
   var openPopupCallback = function () {
     window.formScale.activate();
@@ -52,5 +47,9 @@
     document.addEventListener('keydown', documentKeydownEscPopupHandler);
   };
 
+  var randomPhotos = window.generate.generateRandomPhotos();
+
+  window.photos.activate(photoSelectCallback);
+  window.photos.render(randomPhotos);
   window.popupForm.activate(openPopupCallback, closePopupCallback);
 })();
