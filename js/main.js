@@ -1,52 +1,56 @@
 'use strict';
 
-var randomPhotos = window.generate.generateRandomPhotos();
+(function () {
+  var KEY_ESC = 'Escape';
 
-var photoSelectHandler = function (index) {
-  window.photoPopup.open(randomPhotos[index]);
-};
+  var randomPhotos = window.generate.generateRandomPhotos();
 
-window.photos.activate(photoSelectHandler);
-window.photos.render(randomPhotos);
+  var photoSelectHandler = function (index) {
+    window.photoPopup.open(randomPhotos[index]);
+  };
 
-var openPopupCallback = function () {
-  window.formScale.activate();
-  window.formEffect.activate();
-  window.formHashtags.activate(hashtagsFocusHandler, hashtagsBlurHandler);
-  window.formComments.activate(commentsFocusHandler, commentsBlurHandler);
+  window.photos.activate(photoSelectHandler);
+  window.photos.render(randomPhotos);
 
-  document.addEventListener('keydown', documentKeydownEscPopupHandler);
-};
+  var openPopupCallback = function () {
+    window.formScale.activate();
+    window.formEffect.activate();
+    window.formHashtags.activate(hashtagsFocusHandler, hashtagsBlurHandler);
+    window.formComments.activate(commentsFocusHandler, commentsBlurHandler);
 
-var closePopupCallback = function () {
-  window.formScale.deactivate();
-  window.formEffect.deactivate();
-  window.formHashtags.deactivate();
-  window.formComments.deactivate();
+    document.addEventListener('keydown', documentKeydownEscPopupHandler);
+  };
 
-  document.removeEventListener('keydown', documentKeydownEscPopupHandler);
-};
+  var closePopupCallback = function () {
+    window.formScale.deactivate();
+    window.formEffect.deactivate();
+    window.formHashtags.deactivate();
+    window.formComments.deactivate();
 
-var documentKeydownEscPopupHandler = function (evt) {
-  if (evt.key === window.popupForm.isEscPressed) {
-    window.popupForm.close();
-  }
-};
+    document.removeEventListener('keydown', documentKeydownEscPopupHandler);
+  };
 
-var hashtagsFocusHandler = function () {
-  document.removeEventListener('keydown', documentKeydownEscPopupHandler);
-};
+  var documentKeydownEscPopupHandler = function (evt) {
+    if (evt.key === KEY_ESC) {
+      window.popupForm.close();
+    }
+  };
 
-var hashtagsBlurHandler = function () {
-  document.addEventListener('keydown', documentKeydownEscPopupHandler);
-};
+  var hashtagsFocusHandler = function () {
+    document.removeEventListener('keydown', documentKeydownEscPopupHandler);
+  };
 
-var commentsFocusHandler = function () {
-  document.removeEventListener('keydown', documentKeydownEscPopupHandler);
-};
+  var hashtagsBlurHandler = function () {
+    document.addEventListener('keydown', documentKeydownEscPopupHandler);
+  };
 
-var commentsBlurHandler = function () {
-  document.addEventListener('keydown', documentKeydownEscPopupHandler);
-};
+  var commentsFocusHandler = function () {
+    document.removeEventListener('keydown', documentKeydownEscPopupHandler);
+  };
 
-window.popupForm.activate(openPopupCallback, closePopupCallback);
+  var commentsBlurHandler = function () {
+    document.addEventListener('keydown', documentKeydownEscPopupHandler);
+  };
+
+  window.popupForm.activate(openPopupCallback, closePopupCallback);
+})();

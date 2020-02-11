@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var KEY_ESC = 'Escape';
-
   var openPopup = function () {
     uploadOverlayElement.classList.remove('hidden');
     document.body.classList.add('modal-open');
@@ -11,9 +9,6 @@
     if (typeof openPopupCallback === 'function') {
       openPopupCallback();
     }
-    //
-
-    // document.addEventListener('keydown', documentKeydownEscPopupHandler);
   };
 
   var closePopup = function () {
@@ -25,20 +20,11 @@
     if (typeof closePopupCallback === 'function') {
       closePopupCallback();
     }
-
-    //
-    // document.removeEventListener('keydown', documentKeydownEscPopupHandler);
   };
 
   var uploadPopupCloseHandler = function () {
     closePopup();
   };
-
-  /* var documentKeydownEscPopupHandler = function (evt) {
-    if (evt.key === KEY_ESC) {
-      closePopup();
-    }
-  }; */
 
   var uploadFilePopupHandler = function () {
     openPopup();
@@ -63,7 +49,6 @@
       closePopupCallback = null;
       uploadFileElement.removeEventListener('change', uploadFilePopupHandler);
     },
-    isEscPressed: KEY_ESC,
     close: closePopup
   };
 })();
