@@ -7,7 +7,7 @@
 
   var getRandomItem = function (items) {
     return items[generateRandomNumber(0, items.length - 1)];
-  }
+  };
 
   window.random = {
     generateRandomNumber: generateRandomNumber,
