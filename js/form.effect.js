@@ -3,15 +3,11 @@
 (function () {
   var NO_EFFECT = 'none';
 
-  var EFFECT_PHOBOS = {
-    MIN: 0,
-    MAX: 3
-  };
+  var EFFECT_PHOBOS_MIN = 0;
+  var EFFECT_PHOBOS_MAX = 3;
 
-  var EFFECT_HEAT = {
-    MIN: 1,
-    MAX: 3
-  };
+  var EFFECT_HEAT_MIN = 1;
+  var EFFECT_HEAT_MAX = 3;
 
   var PERCENT_MAX = 100;
 
@@ -29,10 +25,10 @@
       return 'invert' + '(' + value + '%)';
     },
     'phobos': function (value) {
-      return 'blur' + '(' + calculateEffectDepth((value / PERCENT_MAX), EFFECT_PHOBOS.MIN, EFFECT_PHOBOS.MAX) + 'px)';
+      return 'blur' + '(' + calculateEffectDepth((value / PERCENT_MAX), EFFECT_PHOBOS_MIN, EFFECT_PHOBOS_MAX) + 'px)';
     },
     'heat': function (value) {
-      return 'brightness' + '(' + calculateEffectDepth((value / PERCENT_MAX), EFFECT_HEAT.MIN, EFFECT_HEAT.MAX) + ')';
+      return 'brightness' + '(' + calculateEffectDepth((value / PERCENT_MAX), EFFECT_HEAT_MIN, EFFECT_HEAT_MAX) + ')';
     }
   };
 
