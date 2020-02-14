@@ -2,6 +2,7 @@
 
 (function () {
   var NO_EFFECT = 'none';
+  var EFFECT_DEFAULT_PERCENT = 0;
 
   var EFFECT_PHOBOS_MIN = 0;
   var EFFECT_PHOBOS_MAX = 3;
@@ -42,7 +43,7 @@
   };
 
   var setImageEffect = function (effect) {
-    uploadImagePreviewElement.style.filter = Effects[effect](1);
+    uploadImagePreviewElement.style.filter = Effects[effect](EFFECT_DEFAULT_PERCENT);
     effectLevelFieldsetElement.style.display = 'block';
     effectLevelPinElement.style.left = 0;
     effectLevelDepthElement.style.width = 0;
@@ -62,6 +63,8 @@
       resetImageEffect();
     } else {
       setImageEffect(effectName);
+      uploadImageElement.classList.add('effects__preview--' + effectName);
+      uploadImageElement.style.filter = Effects[effectName](EFFECT_DEFAULT_PERCENT);
     }
   };
 
@@ -110,6 +113,7 @@
   var effectLevelLineElement = effectLevelFieldsetElement.querySelector('.effect-level__line');
   var effectLevelDepthElement = effectLevelFieldsetElement.querySelector('.effect-level__depth');
   var uploadImagePreviewElement = document.querySelector('.img-upload__preview');
+  var uploadImageElement = uploadImagePreviewElement.querySelector('img');
   var effectValue;
 
   resetImageEffect();
