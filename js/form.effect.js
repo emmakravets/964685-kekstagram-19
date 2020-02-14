@@ -2,6 +2,8 @@
 
 (function () {
   var NO_EFFECT = 'none';
+  var EFFECT_DEFAULT_PERCENT = 0;
+  var EFFECT_MAX_PERCENT = 100;
 
   var EFFECT_PHOBOS = {
     MIN: 0,
@@ -13,26 +15,24 @@
     MAX: 3
   };
 
-  var PERCENT_MAX = 100;
-
   var Effects = {
     'none': function () {
       return '';
     },
     'chrome': function (value) {
-      return 'grayscale' + '(' + (value / PERCENT_MAX) + ')';
+      return 'grayscale' + '(' + (value / EFFECT_MAX_PERCENT) + ')';
     },
     'sepia': function (value) {
-      return 'sepia' + '(' + (value / PERCENT_MAX) + ')';
+      return 'sepia' + '(' + (value / EFFECT_MAX_PERCENT) + ')';
     },
     'marvin': function (value) {
       return 'invert' + '(' + value + '%)';
     },
     'phobos': function (value) {
-      return 'blur' + '(' + calculateEffectDepth((value / PERCENT_MAX), EFFECT_PHOBOS.MIN, EFFECT_PHOBOS.MAX) + 'px)';
+      return 'blur' + '(' + calculateEffectDepth((value / EFFECT_MAX_PERCENT), EFFECT_PHOBOS.MIN, EFFECT_PHOBOS.MAX) + 'px)';
     },
     'heat': function (value) {
-      return 'brightness' + '(' + calculateEffectDepth((value / PERCENT_MAX), EFFECT_HEAT.MIN, EFFECT_HEAT.MAX) + ')';
+      return 'brightness' + '(' + calculateEffectDepth((value / EFFECT_MAX_PERCENT), EFFECT_HEAT.MIN, EFFECT_HEAT.MAX) + ')';
     }
   };
 
@@ -46,7 +46,7 @@
   };
 
   var setImageEffect = function (effect) {
-    uploadImagePreviewElement.style.filter = Effects[effect](1);
+    uploadImagePreviewElement.style.filter = Effects[effect](EFFECT_DEFAULT_PERCENT);
     effectLevelFieldsetElement.style.display = 'block';
     effectLevelPinElement.style.left = 0;
     effectLevelDepthElement.style.width = 0;
@@ -66,6 +66,8 @@
       resetImageEffect();
     } else {
       setImageEffect(effectName);
+      uploadImageElement.classList.add('effects__preview--' + effectName);
+      uploadImageElement.style.filter = Effects[effectName](EFFECT_DEFAULT_PERCENT);
     }
   };
 
@@ -91,7 +93,7 @@
       effectLevelPinElement.style.left = shiftLeft + 'px';
       effectLevelDepthElement.style.width = shiftLeft + 'px';
 
-      effectLevelValueElement.value = Math.round(shiftLeft / (effectLevelLineElement.clientWidth / PERCENT_MAX));
+      effectLevelValueElement.value = Math.round(shiftLeft / (effectLevelLineElement.clientWidth / EFFECT_MAX_PERCENT));
       effectLevelValueElement.setAttribute('value', effectLevelValueElement.value);
       uploadImagePreviewElement.style.filter = Effects[effectValue](effectLevelValueElement.value);
     };
@@ -114,6 +116,8 @@
   var effectLevelLineElement = effectLevelFieldsetElement.querySelector('.effect-level__line');
   var effectLevelDepthElement = effectLevelFieldsetElement.querySelector('.effect-level__depth');
   var uploadImagePreviewElement = document.querySelector('.img-upload__preview');
+  var uploadImageElement = uploadImagePreviewElement.querySelector('img');
+
   var effectValue;
 
   resetImageEffect();
