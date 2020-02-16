@@ -65,8 +65,6 @@
 
   var photoSelectCallback;
 
-  window.backend.load(renderPhotos, window.error.show);
-
   window.photos = {
     activate: function (selectCallback) {
       photoSelectCallback = selectCallback;

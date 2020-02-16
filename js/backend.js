@@ -12,12 +12,12 @@
   };
 
   var ErrorMessage = {
-    BAD_REQUEST: ': Неправильный запрос на сервер',
-    NOT_FOUND: ': Страница не найдена',
-    INTERNAL_SERVER: ': Внутренняя ошибка сервера',
-    DEFAULT: ' Повторите попытку позже',
+    BAD_REQUEST: 'Ошибка {status}: Неправильный запрос на сервер',
+    NOT_FOUND: 'Ошибка {status}: Страница не найдена',
+    INTERNAL_SERVER: 'Ошибка {status}: Внутренняя ошибка сервера',
+    DEFAULT: 'Ошибка {status}: Повторите попытку позже',
     BAD_CONNECTION: 'Произошла ошибка соединения',
-    TIMEOUT: 'Запрос не успел выполниться за '
+    TIMEOUT: 'Запрос не успел выполниться за {timeout} мс'
   };
 
   var getData = function (successHandler, errorHandler) {
@@ -30,16 +30,16 @@
           successHandler(xhr.response);
           break;
         case Status.BAD_REQUEST:
-          errorHandler('Ошибка ' + xhr.status + ErrorMessage.BAD_REQUEST);
+          errorHandler(ErrorMessage.BAD_REQUEST.replace('{status}', xhr.status));
           break;
         case Status.NOT_FOUND:
-          errorHandler('Ошибка ' + xhr.status + ErrorMessage.NOT_FOUND);
+          errorHandler(ErrorMessage.NOT_FOUND.replace('{status}', xhr.status));
           break;
         case Status.INTERNAL_SERVER_ERROR:
-          errorHandler('Ошибка ' + xhr.status + ErrorMessage.INTERNAL_SERVER);
+          errorHandler(ErrorMessage.INTERNAL_SERVER.replace('{status}', xhr.status));
           break;
         default:
-          errorHandler('Ошибка ' + xhr.status + ErrorMessage.DEFAULT);
+          errorHandler(ErrorMessage.DEFAULT.replace('{status}', xhr.status));
       }
     });
 
@@ -48,7 +48,7 @@
     });
 
     xhr.addEventListener('timeout', function () {
-      errorHandler(ErrorMessage.TIMEOUT + xhr.timeout + 'мс');
+      errorHandler(ErrorMessage.DEFAULT.replace('{timeout}', xhr.timeout));
     });
 
     xhr.timeout = TIMEOUT_IN_MS;

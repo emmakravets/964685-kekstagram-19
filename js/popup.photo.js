@@ -40,7 +40,6 @@
 
     clearCommentsElement();
     renderCommentsElement(window.generate.generateRandomComments());
-    // window.backend.load(renderCommentsElement);
   };
 
   var openPopup = function (photo) {
@@ -77,8 +76,6 @@
   var photoCloseElement = document.querySelector('.big-picture__cancel');
   var commentsElement = document.querySelector('.social__comments');
   var commentsTemplateElement = document.querySelector('.social__comment');
-
-  // window.backend.load(renderPhoto);
 
   window.popupPhoto = {
     open: openPopup,

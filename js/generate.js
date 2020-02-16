@@ -23,7 +23,7 @@
 
   var AVATAR_URL_TEMPLATE = 'img/avatar-{index}.svg';
 
-  var generateRandomNumber = function (from, to) {
+  var generateRandomNumber = function (from, to) { // window.random
     return Math.round(Math.random() * (to - from) + from);
   };
 

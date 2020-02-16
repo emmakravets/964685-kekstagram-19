@@ -47,12 +47,13 @@
     document.addEventListener('keydown', documentKeydownEscPopupHandler);
   };
 
+  window.backend.load(window.photos.render, window.error.show);
+
   window.backend.load(function (photos) {
     var photoSelectCallback = function (index) {
       window.popupPhoto.open(photos[index]);
     };
     window.photos.activate(photoSelectCallback);
-    window.photos.render();
     window.popupForm.activate(openPopupCallback, closePopupCallback);
   });
 })();
