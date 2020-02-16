@@ -3,10 +3,6 @@
 (function () {
   var KEY_ESC = 'Escape';
 
-  /* var photoSelectCallback = function (index) {
-    window.popupPhoto.open(randomPhotos[index]);
-  }; */
-
   var openPopupCallback = function () {
     window.formScale.activate();
     window.formEffect.activate();
