@@ -1,9 +1,6 @@
 'use strict';
 
 (function () {
-  var COMMENTS_COUNT_MIN = 0;
-  var COMMENTS_COUNT_MAX = 50;
-
   var KEY_ENTER = 'Enter';
 
   var createPhotoElement = function (photo, index) {
@@ -12,7 +9,7 @@
 
     imageElement.setAttribute('data-index', index);
     imageElement.src = photo.url;
-    photoElement.querySelector('.picture__comments').textContent = photo.comments.length + window.random.generateRandomNumber(COMMENTS_COUNT_MIN, COMMENTS_COUNT_MAX);
+    photoElement.querySelector('.picture__comments').textContent = photo.comments.length;
     photoElement.querySelector('.picture__likes').textContent = photo.likes;
 
     return photoElement;

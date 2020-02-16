@@ -4,9 +4,6 @@
   var AVATAR_WIDTH = 35;
   var AVATAR_HEIGHT = 35;
 
-  var COMMENTS_COUNT_MIN = 0;
-  var COMMENTS_COUNT_MAX = 50;
-
   var KEY_ESC = 'Escape';
 
   var createCommentElement = function (comment) {
@@ -38,12 +35,11 @@
   var renderPhoto = function (photo) {
     photoElement.querySelector('img').src = photo.url;
     photoElement.querySelector('.likes-count').textContent = photo.likes;
-    photoElement.querySelector('.comments-count').textContent = photo.comments.length + window.random.generateRandomNumber(COMMENTS_COUNT_MIN, COMMENTS_COUNT_MAX);
+    photoElement.querySelector('.comments-count').textContent = photo.comments.length;
     photoElement.querySelector('.social__caption').textContent = photo.description;
-    photoElement.querySelector('.likes-count').textContent = photo.likes;
 
     clearCommentsElement();
-    renderCommentsElement(window.generate.generateRandomComments());
+    renderCommentsElement(photo.comments);
   };
 
   var openPopup = function (photo) {
@@ -81,7 +77,7 @@
   var commentsElement = document.querySelector('.social__comments');
   var commentsTemplateElement = document.querySelector('.social__comment');
 
-  window.photoPopup = {
+  window.popupPhoto = {
     open: openPopup,
     close: closePopup
   };

@@ -3,10 +3,6 @@
 (function () {
   var KEY_ESC = 'Escape';
 
-  var photoSelectCallback = function (index) {
-    window.photoPopup.open(randomPhotos[index]);
-  };
-
   var openPopupCallback = function () {
     window.formScale.activate();
     window.formEffect.activate();
@@ -47,9 +43,14 @@
     document.addEventListener('keydown', documentKeydownEscPopupHandler);
   };
 
-  var randomPhotos = window.generate.generateRandomPhotos();
-
-  window.photos.activate(photoSelectCallback);
-  window.photos.render(randomPhotos);
-  window.popupForm.activate(openPopupCallback, closePopupCallback);
+  window.backend.load(function (photos) {
+    var photoSelectCallback = function (index) {
+      window.popupPhoto.open(photos[index]);
+    };
+    window.photos.render(photos);
+    window.photos.activate(photoSelectCallback);
+    window.popupForm.activate(openPopupCallback, closePopupCallback);
+  }, function (errorMessage) {
+    window.error.show(errorMessage);
+  });
 })();

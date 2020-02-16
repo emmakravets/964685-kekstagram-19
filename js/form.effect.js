@@ -3,33 +3,36 @@
 (function () {
   var NO_EFFECT = 'none';
   var EFFECT_DEFAULT_PERCENT = 0;
+  var EFFECT_MAX_PERCENT = 100;
 
-  var EFFECT_PHOBOS_MIN = 0;
-  var EFFECT_PHOBOS_MAX = 3;
+  var EFFECT_PHOBOS = {
+    MIN: 0,
+    MAX: 3
+  };
 
-  var EFFECT_HEAT_MIN = 1;
-  var EFFECT_HEAT_MAX = 3;
-
-  var PERCENT_MAX = 100;
+  var EFFECT_HEAT = {
+    MIN: 1,
+    MAX: 3
+  };
 
   var Effects = {
     'none': function () {
       return '';
     },
     'chrome': function (value) {
-      return 'grayscale' + '(' + (value / PERCENT_MAX) + ')';
+      return 'grayscale' + '(' + (value / EFFECT_MAX_PERCENT) + ')';
     },
     'sepia': function (value) {
-      return 'sepia' + '(' + (value / PERCENT_MAX) + ')';
+      return 'sepia' + '(' + (value / EFFECT_MAX_PERCENT) + ')';
     },
     'marvin': function (value) {
       return 'invert' + '(' + value + '%)';
     },
     'phobos': function (value) {
-      return 'blur' + '(' + calculateEffectDepth((value / PERCENT_MAX), EFFECT_PHOBOS_MIN, EFFECT_PHOBOS_MAX) + 'px)';
+      return 'blur' + '(' + calculateEffectDepth((value / EFFECT_MAX_PERCENT), EFFECT_PHOBOS.MIN, EFFECT_PHOBOS.MAX) + 'px)';
     },
     'heat': function (value) {
-      return 'brightness' + '(' + calculateEffectDepth((value / PERCENT_MAX), EFFECT_HEAT_MIN, EFFECT_HEAT_MAX) + ')';
+      return 'brightness' + '(' + calculateEffectDepth((value / EFFECT_MAX_PERCENT), EFFECT_HEAT.MIN, EFFECT_HEAT.MAX) + ')';
     }
   };
 
@@ -90,7 +93,7 @@
       effectLevelPinElement.style.left = shiftLeft + 'px';
       effectLevelDepthElement.style.width = shiftLeft + 'px';
 
-      effectLevelValueElement.value = Math.round(shiftLeft / (effectLevelLineElement.clientWidth / PERCENT_MAX));
+      effectLevelValueElement.value = Math.round(shiftLeft / (effectLevelLineElement.clientWidth / EFFECT_MAX_PERCENT));
       effectLevelValueElement.setAttribute('value', effectLevelValueElement.value);
       uploadImagePreviewElement.style.filter = Effects[effectValue](effectLevelValueElement.value);
     };
@@ -114,6 +117,7 @@
   var effectLevelDepthElement = effectLevelFieldsetElement.querySelector('.effect-level__depth');
   var uploadImagePreviewElement = document.querySelector('.img-upload__preview');
   var uploadImageElement = uploadImagePreviewElement.querySelector('img');
+
   var effectValue;
 
   resetImageEffect();
