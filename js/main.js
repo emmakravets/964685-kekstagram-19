@@ -3,9 +3,9 @@
 (function () {
   var KEY_ESC = 'Escape';
 
-  var photoSelectCallback = function (index) {
-    window.photoPopup.open(randomPhotos[index]);
-  };
+  /* var photoSelectCallback = function (index) {
+    window.popupPhoto.open(randomPhotos[index]);
+  }; */
 
   var openPopupCallback = function () {
     window.formScale.activate();
@@ -47,9 +47,12 @@
     document.addEventListener('keydown', documentKeydownEscPopupHandler);
   };
 
-  var randomPhotos = window.generate.generateRandomPhotos();
-
-  window.photos.activate(photoSelectCallback);
-  window.photos.render(randomPhotos);
-  window.popupForm.activate(openPopupCallback, closePopupCallback);
+  window.backend.load(function (photos) {
+    var photoSelectCallback = function (index) {
+      window.popupPhoto.open(photos[index]);
+    };
+    window.photos.activate(photoSelectCallback);
+    window.photos.render();
+    window.popupForm.activate(openPopupCallback, closePopupCallback);
+  });
 })();

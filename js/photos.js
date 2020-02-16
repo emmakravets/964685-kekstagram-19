@@ -1,9 +1,6 @@
 'use strict';
 
 (function () {
-  var COMMENTS_COUNT_MIN = 0;
-  var COMMENTS_COUNT_MAX = 50;
-
   var KEY_ENTER = 'Enter';
 
   var createPhotoElement = function (photo, index) {
@@ -12,7 +9,7 @@
 
     imageElement.setAttribute('data-index', index);
     imageElement.src = photo.url;
-    photoElement.querySelector('.picture__comments').textContent = photo.comments.length + window.random.generateRandomNumber(COMMENTS_COUNT_MIN, COMMENTS_COUNT_MAX);
+    photoElement.querySelector('.picture__comments').textContent = photo.comments.length;
     photoElement.querySelector('.picture__likes').textContent = photo.likes;
 
     return photoElement;
@@ -24,6 +21,14 @@
       fragment.appendChild(createPhotoElement(photos[i], i));
     }
     picturesElement.appendChild(fragment);
+  };
+
+  var errorHandler = function (errorMessage) {
+    errorTemplateElement.querySelector('.error__title').textContent = errorMessage;
+    errorTemplateElement.style.top = '-70px';
+    errorTemplateElement.style.lineHeight = '40px';
+    errorTemplateElement.querySelector('.error__inner').removeChild(errorButton);
+    document.body.appendChild(errorTemplateElement);
   };
 
   var picturesKeydownHandler = function (evt) {
@@ -65,8 +70,12 @@
 
   var photoTemplateElement = document.querySelector('#picture').content.querySelector('.picture');
   var picturesElement = document.querySelector('.pictures');
+  var errorTemplateElement = document.querySelector('#error').content.querySelector('.error');
+  var errorButton = errorTemplateElement.querySelector('.error__button');
 
   var photoSelectCallback;
+
+  window.backend.load(renderPhotos, errorHandler);
 
   window.photos = {
     activate: function (selectCallback) {
