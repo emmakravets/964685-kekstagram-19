@@ -40,6 +40,7 @@
 
     clearCommentsElement();
     renderCommentsElement(window.generate.generateRandomComments());
+    // window.backend.load(renderCommentsElement);
   };
 
   var openPopup = function (photo) {

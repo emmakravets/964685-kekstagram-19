@@ -23,14 +23,6 @@
     picturesElement.appendChild(fragment);
   };
 
-  var errorHandler = function (errorMessage) {
-    errorTemplateElement.querySelector('.error__title').textContent = errorMessage;
-    errorTemplateElement.style.top = '-70px';
-    errorTemplateElement.style.lineHeight = '40px';
-    errorTemplateElement.querySelector('.error__inner').removeChild(errorButton);
-    document.body.appendChild(errorTemplateElement);
-  };
-
   var picturesKeydownHandler = function (evt) {
     if (evt.key !== KEY_ENTER) {
       return;
@@ -70,12 +62,10 @@
 
   var photoTemplateElement = document.querySelector('#picture').content.querySelector('.picture');
   var picturesElement = document.querySelector('.pictures');
-  var errorTemplateElement = document.querySelector('#error').content.querySelector('.error');
-  var errorButton = errorTemplateElement.querySelector('.error__button');
 
   var photoSelectCallback;
 
-  window.backend.load(renderPhotos, errorHandler);
+  window.backend.load(renderPhotos, window.error.show);
 
   window.photos = {
     activate: function (selectCallback) {

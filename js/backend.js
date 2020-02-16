@@ -2,6 +2,8 @@
 
 (function () {
   var URL = 'https://js.dump.academy/kekstagram/data';
+  var TIMEOUT_IN_MS = 5000;
+
   var Status = {
     OK: 200,
     BAD_REQUEST: 400,
@@ -9,7 +11,16 @@
     INTERNAL_SERVER_ERROR: 500
   };
 
-  var getDataFromServer = function (successHandler, errorHandler) {
+  var ErrorMessage = {
+    BAD_REQUEST: ': Неправильный запрос на сервер',
+    NOT_FOUND: ': Страница не найдена',
+    INTERNAL_SERVER: ': Внутренняя ошибка сервера',
+    DEFAULT: ' Повторите попытку позже',
+    BAD_CONNECTION: 'Произошла ошибка соединения',
+    TIMEOUT: 'Запрос не успел выполниться за '
+  };
+
+  var getData = function (successHandler, errorHandler) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
@@ -19,34 +30,34 @@
           successHandler(xhr.response);
           break;
         case Status.BAD_REQUEST:
-          errorHandler('Ошибка ' + xhr.status + ': Неправильный запрос на сервер');
+          errorHandler('Ошибка ' + xhr.status + ErrorMessage.BAD_REQUEST);
           break;
         case Status.NOT_FOUND:
-          errorHandler('Ошибка ' + xhr.status + ': Страница не найдена');
+          errorHandler('Ошибка ' + xhr.status + ErrorMessage.NOT_FOUND);
           break;
         case Status.INTERNAL_SERVER_ERROR:
-          errorHandler('Ошибка ' + xhr.status + ': Внутренняя ошибка сервера');
+          errorHandler('Ошибка ' + xhr.status + ErrorMessage.INTERNAL_SERVER);
           break;
         default:
-          errorHandler('Произошла ошибка' + xhr.status + 'Повторите попытку позже');
+          errorHandler('Ошибка ' + xhr.status + ErrorMessage.DEFAULT);
       }
     });
 
     xhr.addEventListener('error', function () {
-      errorHandler('Произошла ошибка соединения');
+      errorHandler(ErrorMessage.BAD_CONNECTION);
     });
 
     xhr.addEventListener('timeout', function () {
-      errorHandler('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+      errorHandler(ErrorMessage.TIMEOUT + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 5000;
+    xhr.timeout = TIMEOUT_IN_MS;
 
     xhr.open('GET', URL);
     xhr.send();
   };
 
   window.backend = {
-    load: getDataFromServer
+    load: getData
   };
 })();
