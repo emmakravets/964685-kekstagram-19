@@ -39,7 +39,7 @@
     photoElement.querySelector('.social__caption').textContent = photo.description;
 
     clearCommentsElement();
-    renderCommentsElement(window.generate.generateRandomComments());
+    renderCommentsElement(photo.comments);
   };
 
   var openPopup = function (photo) {

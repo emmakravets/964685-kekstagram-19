@@ -47,13 +47,14 @@
     document.addEventListener('keydown', documentKeydownEscPopupHandler);
   };
 
-  window.backend.load(window.photos.render, window.error.show);
-
   window.backend.load(function (photos) {
     var photoSelectCallback = function (index) {
       window.popupPhoto.open(photos[index]);
     };
+    window.photos.render(photos);
     window.photos.activate(photoSelectCallback);
     window.popupForm.activate(openPopupCallback, closePopupCallback);
+  }, function (errorMessage) {
+    window.error.show(errorMessage);
   });
 })();

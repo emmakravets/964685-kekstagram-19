@@ -1,13 +1,11 @@
 'use strict';
 
 (function () {
-  var LINE_HEIGHT = '40px';
-  var TOP = '-70px';
+  var TEMPLATE_STYLE = 'line-height: 40px; top: -70px;';
 
   var errorHandler = function (errorMessage) {
     errorTemplateElement.querySelector('.error__title').textContent = errorMessage;
-    errorTemplateElement.style.top = TOP;
-    errorTemplateElement.style.lineHeight = LINE_HEIGHT;
+    errorTemplateElement.style = TEMPLATE_STYLE;
     errorTemplateElement.querySelector('.error__inner').removeChild(errorButtonElement);
     document.body.appendChild(errorTemplateElement);
   };
