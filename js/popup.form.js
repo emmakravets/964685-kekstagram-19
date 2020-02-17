@@ -34,6 +34,7 @@
   var uploadFileElement = uploadImageElement.querySelector('#upload-file');
   var uploadCloseElement = document.querySelector('#upload-cancel');
   var uploadOverlayElement = document.querySelector('.img-upload__overlay');
+  var uploadFormElement = document.querySelector('.img-upload__form');
 
   var openPopupCallback;
   var closePopupCallback;
@@ -42,13 +43,17 @@
     activate: function (openCallback, closeCallback) {
       openPopupCallback = openCallback;
       closePopupCallback = closeCallback;
+
       uploadFileElement.addEventListener('change', uploadFilePopupHandler);
     },
-    dectivate: function () {
+    deactivate: function () {
       openPopupCallback = null;
       closePopupCallback = null;
+
       uploadFileElement.removeEventListener('change', uploadFilePopupHandler);
     },
-    close: closePopup
+    close: closePopup,
+    uploadForm: uploadFormElement,
+    uploadOverlay: uploadOverlayElement
   };
 })();
