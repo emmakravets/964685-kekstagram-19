@@ -2,7 +2,7 @@
 
 (function () {
   var URL_LOAD = 'https://js.dump.academy/kekstagram/data';
-  var URL_UPLOAD = 'https://js.dump.academy/kekstaram';
+  var URL_UPLOAD = 'https://js.dump.academy/kekstagram';
   var TIMEOUT_IN_MS = 5000;
 
   var Status = {
