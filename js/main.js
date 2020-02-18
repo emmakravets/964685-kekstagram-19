@@ -9,7 +9,6 @@
     window.formHashtags.activate(hashtagsFocusHandler, hashtagsBlurHandler);
     window.formComments.activate(commentsFocusHandler, commentsBlurHandler);
 
-    window.popupForm.uploadForm.addEventListener('submit', submitFormHandler);
     document.addEventListener('keydown', documentKeydownEscPopupHandler);
   };
 
@@ -19,28 +18,23 @@
     window.formHashtags.deactivate();
     window.formComments.deactivate();
 
-    window.popupForm.uploadForm.removeEventListener('submit', submitFormHandler);
     document.removeEventListener('keydown', documentKeydownEscPopupHandler);
   };
 
   var openSuccessCallback = function () {
     document.addEventListener('keydown', documentKeydownEscSuccessHandler);
-    window.formSuccess.templateElement.addEventListener('click', areaCloseSuccessHandler);
   };
 
   var closeSuccessCallback = function () {
     document.removeEventListener('keydown', documentKeydownEscSuccessHandler);
-    window.formSuccess.templateElement.removeEventListener('click', areaCloseSuccessHandler);
   };
 
   var openErrorCallback = function () {
     document.addEventListener('keydown', documentKeydownEscErrorHandler);
-    window.formSuccess.templateElement.addEventListener('click', areaCloseErrorHandler);
   };
 
   var closeErrorCallback = function () {
     document.removeEventListener('keydown', documentKeydownEscErrorHandler);
-    window.formSuccess.templateElement.removeEventListener('click', areaCloseErrorHandler);
   };
 
   var documentKeydownEscPopupHandler = function (evt) {
@@ -57,18 +51,6 @@
 
   var documentKeydownEscErrorHandler = function (evt) {
     if (evt.key === KEY_ESC) {
-      window.formError.close();
-    }
-  };
-
-  var areaCloseSuccessHandler = function (evt) {
-    if (evt.target === window.formSuccess.templateElement) {
-      window.formSuccess.close();
-    }
-  };
-
-  var areaCloseErrorHandler = function (evt) {
-    if (evt.target === window.formError.templateElement) {
       window.formError.close();
     }
   };
@@ -95,18 +77,30 @@
     };
     window.photos.render(photos);
     window.photos.activate(photoSelectCallback);
-    window.popupForm.activate(openPopupCallback, closePopupCallback);
+
+    window.popupForm.activate(openPopupCallback, closePopupCallback, submitFormCallback);
   }, function (errorMessage) {
-    window.error.show(errorMessage);
+    window.messageError.show(
+        errorMessage,
+        'Перезагрузить страницу',
+        undefined,
+        function () {
+          window.location.reload();
+        }
+    );
   });
 
-  var submitFormHandler = function (evt) {
-    window.backend.upload(new FormData(window.popupForm.uploadForm), function () {
-      window.popupForm.uploadOverlay.classList.add('hidden');
-      window.formSuccess.show(openSuccessCallback, closeSuccessCallback);
+  var submitFormCallback = function (formData) {
+    window.backend.upload(formData, function () {
+      window.popupForm.reset();
+      window.formSuccess.activate(openSuccessCallback, closeSuccessCallback);
     }, function () {
-      window.formError.show(openErrorCallback, closeErrorCallback);
+      window.messageError.show(
+          'Ошибка загрузки файла',
+          'Загрузить другой файл',
+          openErrorCallback,
+          closeErrorCallback
+      );
     });
-    evt.preventDefault();
   };
 })();

@@ -64,6 +64,6 @@
     },
     upload: function (data, successHandler, errorHandler) {
       requestServerData(URL_UPLOAD, 'POST', data, successHandler, errorHandler);
-    }
+    },
   };
 })();
