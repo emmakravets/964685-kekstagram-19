@@ -2,6 +2,11 @@
 
 (function () {
   var KEY_ESC = 'Escape';
+  var ErrorMessage = {
+    LOAD_ACTION: 'Перезагрузить страницу',
+    UPLOAD_TITLE: 'Ошибка загрузки файла',
+    UPLOAD_ACTION: 'Загрузить другой файл'
+  };
 
   var openPopupCallback = function () {
     window.formScale.activate();
@@ -51,7 +56,7 @@
 
   var documentKeydownEscErrorHandler = function (evt) {
     if (evt.key === KEY_ESC) {
-      window.formError.close();
+      window.messageError.close();
     }
   };
 
@@ -82,7 +87,7 @@
   }, function (errorMessage) {
     window.messageError.show(
         errorMessage,
-        'Перезагрузить страницу',
+        ErrorMessage.LOAD_ACTION,
         undefined,
         function () {
           window.location.reload();
@@ -94,13 +99,15 @@
     window.backend.upload(formData, function () {
       window.popupForm.reset();
       window.formSuccess.activate(openSuccessCallback, closeSuccessCallback);
+      closePopupCallback();
     }, function () {
       window.messageError.show(
-          'Ошибка загрузки файла',
-          'Загрузить другой файл',
+          ErrorMessage.UPLOAD_TITLE,
+          ErrorMessage.UPLOAD_ACTION,
           openErrorCallback,
           closeErrorCallback
       );
+      closePopupCallback();
     });
   };
 })();
