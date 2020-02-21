@@ -23,10 +23,6 @@
     }
   };
 
-  var successClickHandler = function () {
-    openSuccess();
-  };
-
   var successButtonClickHandler = function () {
     closeSuccess();
   };
@@ -49,7 +45,7 @@
     activate: function (openCallback, closeCallback) {
       openSuccessCallback = openCallback;
       closeSuccessCallback = closeCallback;
-      successClickHandler();
+      openSuccess();
     },
     deactivate: function () {
       openSuccessCallback = null;
