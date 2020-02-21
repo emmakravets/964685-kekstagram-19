@@ -1,7 +1,8 @@
 'use strict';
 
 (function () {
-  var URL = 'https://js.dump.academy/kekstagram/data';
+  var URL_LOAD = 'https://js.dump.academy/kekstagram/data';
+  var URL_UPLOAD = 'https://js.dump.academy/kekstagram';
   var TIMEOUT_IN_MS = 5000;
 
   var Status = {
@@ -20,7 +21,7 @@
     TIMEOUT: 'Запрос не успел выполниться за {timeout} мс'
   };
 
-  var getData = function (successHandler, errorHandler) {
+  var requestServerData = function (url, method, data, successHandler, errorHandler) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
@@ -53,11 +54,16 @@
 
     xhr.timeout = TIMEOUT_IN_MS;
 
-    xhr.open('GET', URL);
-    xhr.send();
+    xhr.open(method, url);
+    xhr.send(data);
   };
 
   window.backend = {
-    load: getData
+    load: function (successHandler, errorHandler) {
+      requestServerData(URL_LOAD, 'GET', null, successHandler, errorHandler);
+    },
+    upload: function (data, successHandler, errorHandler) {
+      requestServerData(URL_UPLOAD, 'POST', data, successHandler, errorHandler);
+    },
   };
 })();
