@@ -80,9 +80,12 @@
     var photoSelectCallback = function (index) {
       window.popupPhoto.open(photos[index]);
     };
+    var filterSelectCallback = function () {
+      return photos;
+    };
     window.photos.render(photos);
     window.photos.activate(photoSelectCallback);
-    window.filter.activate(photos);
+    window.filter.activate(filterSelectCallback);
     window.filter.show();
 
     window.popupForm.activate(openPopupCallback, closePopupCallback, submitFormCallback);

@@ -56,23 +56,33 @@
     window.photos.render(newPhotosArray);
   };
 
-  var toggleFilter = function (photos) {
-    filterButtonsElement.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        toggleFilterClass(btn);
-        window.debounce(changeFilter(photos));
-      });
-    });
-  };
+  /* if (typeof toggleFilterCallback === 'function') {
+    toggleFilterCallback();
+  } */
+
+  /* var handler = function (btn) {
+    toggleFilterClass(btn);
+    window.debounce(changeFilter(toggleFilterCallback()));
+  }; */
 
   var imageFiltersElement = document.querySelector('.img-filters');
   var filterButtonsElement = document.querySelectorAll('.img-filters__button');
   var randomButtonElement = document.querySelector('#filter-random');
   var discussedButtonElement = document.querySelector('#filter-discussed');
   var currentButton = document.querySelector('.img-filters__button--active');
+  // var toggleFilterCallback;
 
   window.filter = {
-    activate: toggleFilter,
+    activate: function (filterSelectCallback) {
+      // toggleFilterCallback = filterSelectCallback;
+
+      filterButtonsElement.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          toggleFilterClass(btn);
+          window.debounce(changeFilter(filterSelectCallback()));
+        });
+      });
+    },
     show: function () {
       imageFiltersElement.classList.remove('img-filters--inactive');
     }
