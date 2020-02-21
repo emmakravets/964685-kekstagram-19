@@ -41,7 +41,7 @@
   var openSuccessCallback;
   var closeSuccessCallback;
 
-  window.formSuccess = {
+  window.messageSuccess = {
     activate: function (openCallback, closeCallback) {
       openSuccessCallback = openCallback;
       closeSuccessCallback = closeCallback;

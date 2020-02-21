@@ -98,7 +98,7 @@
   var submitFormCallback = function (formData) {
     window.backend.upload(formData, function () {
       window.popupForm.reset();
-      window.formSuccess.activate(openSuccessCallback, closeSuccessCallback);
+      window.messageSuccess.activate(openSuccessCallback, closeSuccessCallback);
       closePopupCallback();
     }, function () {
       window.messageError.show(
