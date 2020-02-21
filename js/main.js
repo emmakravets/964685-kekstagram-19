@@ -82,6 +82,8 @@
     };
     window.photos.render(photos);
     window.photos.activate(photoSelectCallback);
+    window.filter.activate(photos);
+    window.filter.show();
 
     window.popupForm.activate(openPopupCallback, closePopupCallback, submitFormCallback);
   }, function (errorMessage) {
