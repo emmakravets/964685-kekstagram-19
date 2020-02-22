@@ -3,10 +3,14 @@
 (function () {
   var RANDOM_PHOTOS_COUNT = 10;
 
-  var toggleFilterClass = function (button) {
-    currentButton.classList.remove('img-filters__button--active');
-    button.classList.add('img-filters__button--active');
-    currentButton = button;
+  var Filters = {
+    default: filterByDefault,
+    random: filterRandomly,
+    discussed: filterByDiscussed
+  };
+
+  var filterByDefault = function (photos) {
+    return photos.slice();
   };
 
   var shufflePhotos = function (array) {
@@ -19,11 +23,11 @@
     return array;
   };
 
-  var sortByRandomPhotos = function (photos) {
+  var filterRandomly = function (photos) {
     return shufflePhotos(photos).splice(RANDOM_PHOTOS_COUNT);
   };
 
-  var sortByDiscussedPhotos = function (photos) {
+  var filterByDiscussed = function (photos) {
     photos.sort(function (min, max) {
       var difference = max.comments.length - min.comments.length;
       if (difference === 0) {
@@ -33,58 +37,41 @@
     });
   };
 
-  var clearDefaultPhotos = function () {
-    var picturesElement = document.querySelectorAll('.picture');
-    picturesElement.forEach(function (photo) {
-      photo.remove();
-    });
-  };
+  var filtersClickHandler = function (evt) {
+    var element = evt.target;
 
-  var changeFilter = function (photos) {
-    var newPhotosArray = photos.slice();
-
-    clearDefaultPhotos();
-
-    switch (currentButton) {
-      case randomButtonElement:
-        sortByRandomPhotos(newPhotosArray);
-        break;
-      case discussedButtonElement:
-        sortByDiscussedPhotos(newPhotosArray);
-        break;
+    if (!element.classList.contains('img-filters__button')) {
+      return;
     }
-    window.photos.render(newPhotosArray);
+
+    var filterName = element.getAttribute('id').split('-')[1];
+
+    currentFilterElement.classList.remove('img-filters__button--active');
+    element.classList.add('img-filters__button--active');
+    currentFilterElement = element;
+
+    if (typeof selectCallback === 'function') {
+      if (typeof Filters[filterName] !== undefined) {
+        selectCallback(Filters[filterName]);
+      }
+    }
   };
 
-  /* if (typeof toggleFilterCallback === 'function') {
-    toggleFilterCallback();
-  } */
-
-  /* var handler = function (btn) {
-    toggleFilterClass(btn);
-    window.debounce(changeFilter(toggleFilterCallback()));
-  }; */
-
-  var imageFiltersElement = document.querySelector('.img-filters');
-  var filterButtonsElement = document.querySelectorAll('.img-filters__button');
-  var randomButtonElement = document.querySelector('#filter-random');
-  var discussedButtonElement = document.querySelector('#filter-discussed');
-  var currentButton = document.querySelector('.img-filters__button--active');
-  // var toggleFilterCallback;
+  var filtersElement = document.querySelector('.img-filters');
+  var currentFilterElement = document.querySelector('.img-filters__button--active');
+  var selectCallback;
 
   window.filter = {
     activate: function (filterSelectCallback) {
-      // toggleFilterCallback = filterSelectCallback;
+      selectCallback = filterSelectCallback;
 
-      filterButtonsElement.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          toggleFilterClass(btn);
-          window.debounce(changeFilter(filterSelectCallback()));
-        });
-      });
+      filtersElement.classList.remove('img-filters--inactive');
+
+      filtersElement.addEventListener('click', filtersClickHandler);
     },
-    show: function () {
-      imageFiltersElement.classList.remove('img-filters--inactive');
+    deactivate: function () {
+      selectCallback = null;
+      filtersElement.removeEventListener('click', filtersClickHandler);
     }
   };
 })();

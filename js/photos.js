@@ -23,6 +23,13 @@
     picturesElement.appendChild(fragment);
   };
 
+  var clearPhotos = function () {
+    var pictureElement = document.querySelectorAll('.picture');
+    pictureElement.forEach(function (photo) {
+      photo.innerHTML = '';
+    });
+  };
+
   var picturesKeydownHandler = function (evt) {
     if (evt.key !== KEY_ENTER) {
       return;
@@ -78,6 +85,7 @@
       picturesElement.removeEventListener('click', picturesClickHandler);
       picturesElement.removeEventListener('keydown', picturesKeydownHandler);
     },
-    render: renderPhotos
+    render: renderPhotos,
+    clear: clearPhotos,
   };
 })();
