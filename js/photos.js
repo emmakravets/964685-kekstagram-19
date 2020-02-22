@@ -26,7 +26,7 @@
   var clearPhotos = function () {
     var pictureElement = document.querySelectorAll('.picture');
     pictureElement.forEach(function (photo) {
-      photo.innerHTML = '';
+      photo.remove();
     });
   };
 
@@ -86,6 +86,6 @@
       picturesElement.removeEventListener('keydown', picturesKeydownHandler);
     },
     render: renderPhotos,
-    clear: clearPhotos,
+    clear: clearPhotos
   };
 })();

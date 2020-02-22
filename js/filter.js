@@ -4,13 +4,21 @@
   var RANDOM_PHOTOS_COUNT = 10;
 
   var Filters = {
-    default: filterByDefault,
-    random: filterRandomly,
-    discussed: filterByDiscussed
-  };
-
-  var filterByDefault = function (photos) {
-    return photos.slice();
+    default: function (photos) {
+      return photos.slice();
+    },
+    random: function (photos) {
+      return shufflePhotos(photos).slice(0, RANDOM_PHOTOS_COUNT);
+    },
+    discussed: function (photos) {
+      return photos.sort(function (min, max) {
+        var difference = max.comments.length - min.comments.length;
+        if (difference === 0) {
+          difference = max.likes - min.likes;
+        }
+        return difference;
+      });
+    }
   };
 
   var shufflePhotos = function (array) {
@@ -21,20 +29,6 @@
       array[i] = temp;
     }
     return array;
-  };
-
-  var filterRandomly = function (photos) {
-    return shufflePhotos(photos).splice(RANDOM_PHOTOS_COUNT);
-  };
-
-  var filterByDiscussed = function (photos) {
-    photos.sort(function (min, max) {
-      var difference = max.comments.length - min.comments.length;
-      if (difference === 0) {
-        difference = max.likes - min.likes;
-      }
-      return difference;
-    });
   };
 
   var filtersClickHandler = function (evt) {
