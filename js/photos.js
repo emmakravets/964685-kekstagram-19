@@ -69,7 +69,6 @@
 
   var photoTemplateElement = document.querySelector('#picture').content.querySelector('.picture');
   var picturesElement = document.querySelector('.pictures');
-
   var photoSelectCallback;
 
   window.photos = {

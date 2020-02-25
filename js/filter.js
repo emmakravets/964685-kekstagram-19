@@ -5,19 +5,26 @@
 
   var Filters = {
     default: function (photos) {
-      return photos.slice();
+      var defaultPhotos = photos.slice();
+      photoSelectCallback(defaultPhotos);
+      return defaultPhotos;
     },
     random: function (photos) {
-      return shufflePhotos(photos).slice(0, RANDOM_PHOTOS_COUNT);
+      var randomPhotos = photos.slice();
+      photoSelectCallback(randomPhotos);
+      return shufflePhotos(randomPhotos).slice(0, RANDOM_PHOTOS_COUNT);
     },
     discussed: function (photos) {
-      return photos.sort(function (min, max) {
+      var discussedPhotos = photos.slice();
+      photoSelectCallback(discussedPhotos);
+      discussedPhotos.sort(function (min, max) {
         var difference = max.comments.length - min.comments.length;
         if (difference === 0) {
           difference = max.likes - min.likes;
         }
         return difference;
       });
+      return discussedPhotos;
     }
   };
 
@@ -54,10 +61,12 @@
   var filtersElement = document.querySelector('.img-filters');
   var currentFilterElement = document.querySelector('.img-filters__button--active');
   var selectCallback;
+  var photoSelectCallback;
 
   window.filter = {
-    activate: function (filterSelectCallback) {
+    activate: function (filterSelectCallback, photoSelectAfterFilterCallback) {
       selectCallback = filterSelectCallback;
+      photoSelectCallback = photoSelectAfterFilterCallback;
 
       filtersElement.classList.remove('img-filters--inactive');
 
@@ -65,6 +74,8 @@
     },
     deactivate: function () {
       selectCallback = null;
+      photoSelectCallback = null;
+
       filtersElement.removeEventListener('click', filtersClickHandler);
     }
   };
