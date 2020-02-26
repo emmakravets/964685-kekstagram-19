@@ -6,17 +6,14 @@
   var Filters = {
     default: function (photos) {
       var defaultPhotos = photos.slice();
-      photoSelectCallback(defaultPhotos);
       return defaultPhotos;
     },
     random: function (photos) {
       var randomPhotos = photos.slice();
-      photoSelectCallback(randomPhotos);
       return shufflePhotos(randomPhotos).slice(0, RANDOM_PHOTOS_COUNT);
     },
     discussed: function (photos) {
       var discussedPhotos = photos.slice();
-      photoSelectCallback(discussedPhotos);
       discussedPhotos.sort(function (min, max) {
         var difference = max.comments.length - min.comments.length;
         if (difference === 0) {
@@ -61,12 +58,10 @@
   var filtersElement = document.querySelector('.img-filters');
   var currentFilterElement = document.querySelector('.img-filters__button--active');
   var selectCallback;
-  var photoSelectCallback;
 
   window.filter = {
-    activate: function (filterSelectCallback, photoSelectAfterFilterCallback) {
+    activate: function (filterSelectCallback) {
       selectCallback = filterSelectCallback;
-      photoSelectCallback = photoSelectAfterFilterCallback;
 
       filtersElement.classList.remove('img-filters--inactive');
 
@@ -74,7 +69,6 @@
     },
     deactivate: function () {
       selectCallback = null;
-      photoSelectCallback = null;
 
       filtersElement.removeEventListener('click', filtersClickHandler);
     }

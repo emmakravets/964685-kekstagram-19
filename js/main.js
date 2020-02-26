@@ -68,23 +68,21 @@
     }
   };
 
-  window.backend.load(function (photos) {
+  var photos;
+
+  window.backend.load(function (loadedPhotos) {
+    photos = loadedPhotos;
     var photoSelectCallback = function (index) {
       window.popupPhoto.open(photos[index]);
     };
-    var photoSelectAfterFilterCallback = function (array) {
-      photoSelectCallback = function (index) {
-        window.popupPhoto.open(array[index]);
-      };
-    };
     var filterSelectCallback = function (filter) {
+      photos = filter(loadedPhotos);
       window.photos.clear();
-      window.photos.render(filter(photos));
-      window.photos.activate(photoSelectCallback);
+      window.photos.render(photos);
     };
     window.photos.render(photos);
     window.photos.activate(photoSelectCallback);
-    window.filter.activate(filterSelectCallback, photoSelectAfterFilterCallback);
+    window.filter.activate(filterSelectCallback);
     window.popupForm.activate(openPopupCallback, closePopupCallback, submitFormCallback);
   }, function (errorMessage) {
     window.messageError.show(
