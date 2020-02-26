@@ -8,11 +8,19 @@
     UPLOAD_ACTION: 'Загрузить другой файл'
   };
 
+  var blurFormElementHandler = function () {
+    document.addEventListener('keydown', documentKeydownEscPopupHandler);
+  };
+
+  var focusFormElementHandler = function () {
+    document.removeEventListener('keydown', documentKeydownEscPopupHandler);
+  };
+
   var openPopupCallback = function () {
     window.formScale.activate();
     window.formEffect.activate();
-    window.formHashtags.activate(hashtagsFocusHandler, hashtagsBlurHandler);
-    window.formComments.activate(commentsFocusHandler, commentsBlurHandler);
+    window.formHashtags.activate(focusFormElementHandler, blurFormElementHandler);
+    window.formComments.activate(focusFormElementHandler, blurFormElementHandler);
 
     document.addEventListener('keydown', documentKeydownEscPopupHandler);
   };
@@ -60,29 +68,21 @@
     }
   };
 
-  var hashtagsFocusHandler = function () {
-    document.removeEventListener('keydown', documentKeydownEscPopupHandler);
-  };
+  var photos;
 
-  var hashtagsBlurHandler = function () {
-    document.addEventListener('keydown', documentKeydownEscPopupHandler);
-  };
-
-  var commentsFocusHandler = function () {
-    document.removeEventListener('keydown', documentKeydownEscPopupHandler);
-  };
-
-  var commentsBlurHandler = function () {
-    document.addEventListener('keydown', documentKeydownEscPopupHandler);
-  };
-
-  window.backend.load(function (photos) {
+  window.backend.load(function (loadedPhotos) {
+    photos = loadedPhotos;
     var photoSelectCallback = function (index) {
       window.popupPhoto.open(photos[index]);
     };
+    var filterSelectCallback = function (filter) {
+      photos = filter(loadedPhotos);
+      window.photos.clear();
+      window.photos.render(photos);
+    };
     window.photos.render(photos);
     window.photos.activate(photoSelectCallback);
-
+    window.filter.activate(filterSelectCallback);
     window.popupForm.activate(openPopupCallback, closePopupCallback, submitFormCallback);
   }, function (errorMessage) {
     window.messageError.show(

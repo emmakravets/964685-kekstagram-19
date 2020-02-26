@@ -23,6 +23,13 @@
     picturesElement.appendChild(fragment);
   };
 
+  var clearPhotos = function () {
+    var pictureElement = document.querySelectorAll('.picture');
+    pictureElement.forEach(function (photo) {
+      photo.remove();
+    });
+  };
+
   var picturesKeydownHandler = function (evt) {
     if (evt.key !== KEY_ENTER) {
       return;
@@ -62,7 +69,6 @@
 
   var photoTemplateElement = document.querySelector('#picture').content.querySelector('.picture');
   var picturesElement = document.querySelector('.pictures');
-
   var photoSelectCallback;
 
   window.photos = {
@@ -78,6 +84,7 @@
       picturesElement.removeEventListener('click', picturesClickHandler);
       picturesElement.removeEventListener('keydown', picturesKeydownHandler);
     },
-    render: renderPhotos
+    render: renderPhotos,
+    clear: clearPhotos
   };
 })();
