@@ -28,7 +28,7 @@
 
   var showedComments = 0;
 
-  var showComments = function (comments) {
+  var loadComments = function (comments) {
     var nextComments = showedComments + MAX_SHOWED_COMMENTS;
     if (comments.length > nextComments) {
       for (var i = showedComments; i < nextComments; i++) {
@@ -46,14 +46,21 @@
     }
   };
 
+  var resetComments = function () {
+    showedComments = 0;
+    clearCommentsElement();
+    commentsLoader.classList.remove('hidden');
+  };
+
   var renderCommentsElement = function (comments) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < comments.length; i++) {
-      fragment.appendChild(createCommentElement(comments[i]));
-    }
+    comments.forEach(function (comment) {
+      fragment.appendChild(createCommentElement(comment));
+    });
     commentsElement.appendChild(fragment);
+
     uploadedComments = document.querySelectorAll('.social__comment');
-    showComments(uploadedComments);
+    loadComments(uploadedComments);
   };
 
   var renderPhoto = function (photo) {
@@ -86,6 +93,7 @@
     commentsLoader.removeEventListener('click', commentsLoadClickHandler);
 
     document.removeEventListener('keydown', documentKeydownHandler);
+    resetComments();
   };
 
   var popupCloseClickHandler = function () {
@@ -99,7 +107,7 @@
   };
 
   var commentsLoadClickHandler = function () {
-    showComments(uploadedComments);
+    loadComments(uploadedComments);
   };
 
   var photoElement = document.querySelector('.big-picture');
