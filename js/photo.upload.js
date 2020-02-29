@@ -19,17 +19,17 @@
 
       reader.readAsDataURL(file);
     } else {
-      errorCallback();
+      errorChangeCallback();
     }
   };
 
   var photoUploadElement = document.querySelector('.img-upload__input');
   var defaulPhotoElement = document.querySelector('.img-upload__preview img');
-  var errorCallback;
+  var errorChangeCallback;
 
   window.photoUpload = {
-    activate: function (openPhotoErrorCallback) {
-      errorCallback = openPhotoErrorCallback;
+    activate: function (changePhotoErrorCallback) {
+      errorChangeCallback = changePhotoErrorCallback;
       photoUploadElement.addEventListener('change', changePhotoHandler);
     },
     deactivate: function () {

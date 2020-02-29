@@ -18,7 +18,7 @@
     document.removeEventListener('keydown', documentKeydownEscPopupHandler);
   };
 
-  var openPhotoErrorCallback = function () {
+  var changePhotoErrorCallback = function () {
     window.messageError.show(
         ErrorMessage.PHOTO_UPLOAD_TITLE,
         ErrorMessage.PHOTO_UPLOAD_ACTION,
@@ -95,7 +95,7 @@
     window.photos.activate(photoSelectCallback);
     window.filter.activate(filterSelectCallback);
     window.popupForm.activate(openPopupCallback, closePopupCallback, submitFormCallback);
-    window.photoUpload.activate(openPhotoErrorCallback);
+    window.photoUpload.activate(changePhotoErrorCallback);
   }, function (errorMessage) {
     window.messageError.show(
         errorMessage,
