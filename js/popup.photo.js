@@ -6,7 +6,6 @@
 
   var KEY_ESC = 'Escape';
   var COMMENT_PER_CLICK = 5;
-  var commentsAlreadyShown = 0;
 
   var createCommentElement = function (comment) {
     var commentElement = commentsTemplateElement.cloneNode(true);
@@ -113,6 +112,7 @@
   var commentsTemplateElement = document.querySelector('.social__comment');
   var showedCommentsCountElement = document.querySelector('.social__comment-showed');
   var commentsLoader = document.querySelector('.comments-loader');
+  var commentsAlreadyShown = 0;
   var uploadedComments;
 
   window.popupPhoto = {
