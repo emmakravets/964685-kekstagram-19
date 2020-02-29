@@ -5,7 +5,9 @@
   var ErrorMessage = {
     LOAD_ACTION: 'Перезагрузить страницу',
     UPLOAD_TITLE: 'Ошибка загрузки файла',
-    UPLOAD_ACTION: 'Загрузить другой файл'
+    UPLOAD_ACTION: 'Загрузить другой файл',
+    PHOTO_UPLOAD_TITLE: 'Неверный формат изображения',
+    PHOTO_UPLOAD_ACTION: 'Выберите другое изображение'
   };
 
   var blurFormElementHandler = function () {
@@ -14,6 +16,15 @@
 
   var focusFormElementHandler = function () {
     document.removeEventListener('keydown', documentKeydownEscPopupHandler);
+  };
+
+  var changePhotoErrorCallback = function () {
+    window.messageError.show(
+        ErrorMessage.PHOTO_UPLOAD_TITLE,
+        ErrorMessage.PHOTO_UPLOAD_ACTION,
+        openErrorCallback,
+        closeErrorCallback
+    );
   };
 
   var openPopupCallback = function () {
@@ -84,6 +95,7 @@
     window.photos.activate(photoSelectCallback);
     window.filter.activate(filterSelectCallback);
     window.popupForm.activate(openPopupCallback, closePopupCallback, submitFormCallback);
+    window.photoUpload.activate(changePhotoErrorCallback);
   }, function (errorMessage) {
     window.messageError.show(
         errorMessage,
