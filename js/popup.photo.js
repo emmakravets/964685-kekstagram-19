@@ -5,7 +5,8 @@
   var AVATAR_HEIGHT = 35;
 
   var KEY_ESC = 'Escape';
-  var MAX_SHOWED_COMMENTS = 5;
+  var COMMENT_PER_CLICK = 5;
+  var commentsAlreadyShown = 0;
 
   var createCommentElement = function (comment) {
     var commentElement = commentsTemplateElement.cloneNode(true);
@@ -26,28 +27,25 @@
     commentsElement.innerHTML = '';
   };
 
-  var showedComments = 0;
-
   var loadComments = function (comments) {
-    var nextComments = showedComments + MAX_SHOWED_COMMENTS;
-    if (comments.length > nextComments) {
-      for (var i = showedComments; i < nextComments; i++) {
-        comments[i].style.display = 'flex';
-      }
-      showedComments = nextComments;
-      showedCommentsCountElement.textContent = showedComments;
-    } else {
-      for (i = showedComments; i < comments.length; i++) {
-        comments[i].style.display = 'flex';
-      }
-      showedComments = comments.length;
-      showedCommentsCountElement.textContent = comments.length;
+    var total = comments.length;
+    var limit = Math.min(commentsAlreadyShown + COMMENT_PER_CLICK, total);
+
+    for (var i = commentsAlreadyShown; i < limit; i++) {
+      comments[i].style.display = 'flex';
+    }
+
+    commentsAlreadyShown = limit;
+
+    if (commentsAlreadyShown === total) {
       commentsLoader.classList.add('hidden');
     }
+
+    showedCommentsCountElement.textContent = limit;
   };
 
   var resetComments = function () {
-    showedComments = 0;
+    commentsAlreadyShown = 0;
     clearCommentsElement();
     commentsLoader.classList.remove('hidden');
   };
@@ -58,9 +56,6 @@
       fragment.appendChild(createCommentElement(comment));
     });
     commentsElement.appendChild(fragment);
-
-    uploadedComments = document.querySelectorAll('.social__comment');
-    loadComments(uploadedComments);
   };
 
   var renderPhoto = function (photo) {
@@ -77,6 +72,8 @@
     document.body.classList.add('modal-open');
 
     renderPhoto(photo);
+    uploadedComments = document.querySelectorAll('.social__comment');
+    loadComments(uploadedComments);
 
     photoElement.classList.remove('hidden');
     photoCloseElement.addEventListener('click', popupCloseClickHandler);
