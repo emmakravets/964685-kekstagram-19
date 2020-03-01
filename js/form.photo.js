@@ -27,12 +27,13 @@
   var defaulPhotoElement = document.querySelector('.img-upload__preview img');
   var errorChangeCallback;
 
-  window.photoUpload = {
+  window.formPhoto = {
     activate: function (changePhotoErrorCallback) {
       errorChangeCallback = changePhotoErrorCallback;
       photoUploadElement.addEventListener('change', changePhotoHandler);
     },
     deactivate: function () {
+      errorChangeCallback = null;
       photoUploadElement.removeEventListener('change', changePhotoHandler);
     }
   };

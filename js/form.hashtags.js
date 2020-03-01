@@ -8,6 +8,9 @@
   var HASHTAGS_SEPARATOR = ' ';
   var HASHTAGS_COUNT_LIMIT = 5;
 
+  var INPUT_ERROR_STYLE = '#ff0000';
+  var INPUT_DEFAULT_STYLE = '#ffffff';
+
   var HashtagsValidationMessages = {
     hashtagStart: 'Хэштег должен начинаться с # (решётка)',
     notOneHashSymbol: 'Хэштег не может состоять только из одной решётки',
@@ -83,6 +86,7 @@
   var hashtagsBlurCallback;
 
   var hashtagsInputChangeHandler = function (evt) {
+    hashtagsInputElement.style.borderColor = INPUT_DEFAULT_STYLE;
     hashtagsInputElement.setCustomValidity(validateHashtags(evt.target.value));
   };
 
@@ -98,12 +102,17 @@
     }
   };
 
+  var hashtagsInputInvalidHandler = function () {
+    hashtagsInputElement.style.borderColor = INPUT_ERROR_STYLE;
+  };
+
   window.formHashtags = {
     activate: function (focusCallback, blurCallback) {
       hashtagsFocusCallback = focusCallback;
       hashtagsBlurCallback = blurCallback;
 
       hashtagsInputElement.addEventListener('change', hashtagsInputChangeHandler);
+      hashtagsInputElement.addEventListener('invalid', hashtagsInputInvalidHandler);
       hashtagsInputElement.addEventListener('focus', hashtagsInputFocusHandler);
       hashtagsInputElement.addEventListener('blur', hashtagsInputBlurHandler);
     },
@@ -112,6 +121,7 @@
       hashtagsBlurCallback = null;
 
       hashtagsInputElement.removeEventListener('change', hashtagsInputChangeHandler);
+      hashtagsInputElement.removeEventListener('invalid', hashtagsInputInvalidHandler);
       hashtagsInputElement.removeEventListener('focus', hashtagsInputFocusHandler);
       hashtagsInputElement.removeEventListener('blur', hashtagsInputBlurHandler);
     }
