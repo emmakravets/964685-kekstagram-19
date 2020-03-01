@@ -24,8 +24,8 @@
   };
 
   var clearPhotos = function () {
-    var pictureElement = document.querySelectorAll('.picture');
-    pictureElement.forEach(function (photo) {
+    var pictureElements = document.querySelectorAll('.picture');
+    pictureElements.forEach(function (photo) {
       photo.remove();
     });
   };

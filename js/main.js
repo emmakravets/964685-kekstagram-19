@@ -45,6 +45,22 @@
     document.removeEventListener('keydown', documentKeydownEscPopupHandler);
   };
 
+  var submitFormCallback = function (formData) {
+    window.backend.upload(formData, function () {
+      window.popupForm.reset();
+      window.messageSuccess.activate(openSuccessCallback, closeSuccessCallback);
+      closePopupCallback();
+    }, function () {
+      window.messageError.show(
+          ErrorMessage.UPLOAD_TITLE,
+          ErrorMessage.UPLOAD_ACTION,
+          openErrorCallback,
+          closeErrorCallback
+      );
+      closePopupCallback();
+    });
+  };
+
   var openSuccessCallback = function () {
     document.addEventListener('keydown', documentKeydownEscSuccessHandler);
   };
@@ -69,7 +85,7 @@
 
   var documentKeydownEscSuccessHandler = function (evt) {
     if (evt.key === KEY_ESC) {
-      window.formSuccess.close();
+      window.messageSuccess.close();
     }
   };
 
@@ -86,16 +102,16 @@
     var photoSelectCallback = function (index) {
       window.popupPhoto.open(photos[index]);
     };
-    var filterSelectCallback = function (filter) {
+    var filterSelectCallback = window.debounce(function (filter) {
       photos = filter(loadedPhotos);
       window.photos.clear();
       window.photos.render(photos);
-    };
+    });
     window.photos.render(photos);
     window.photos.activate(photoSelectCallback);
     window.filter.activate(filterSelectCallback);
     window.popupForm.activate(openPopupCallback, closePopupCallback, submitFormCallback);
-    window.photoUpload.activate(changePhotoErrorCallback);
+    window.formPhoto.activate(changePhotoErrorCallback);
   }, function (errorMessage) {
     window.messageError.show(
         errorMessage,
@@ -106,20 +122,4 @@
         }
     );
   });
-
-  var submitFormCallback = function (formData) {
-    window.backend.upload(formData, function () {
-      window.popupForm.reset();
-      window.messageSuccess.activate(openSuccessCallback, closeSuccessCallback);
-      closePopupCallback();
-    }, function () {
-      window.messageError.show(
-          ErrorMessage.UPLOAD_TITLE,
-          ErrorMessage.UPLOAD_ACTION,
-          openErrorCallback,
-          closeErrorCallback
-      );
-      closePopupCallback();
-    });
-  };
 })();
