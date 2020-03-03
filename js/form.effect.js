@@ -5,15 +5,11 @@
   var EFFECT_DEFAULT_PERCENT = 0;
   var EFFECT_MAX_PERCENT = 100;
 
-  var EFFECT_PHOBOS = {
-    MIN: 0,
-    MAX: 3
-  };
+  var EFFECT_PHOBOS_MIN = 0;
+  var EFFECT_PHOBOS_MAX = 3;
 
-  var EFFECT_HEAT = {
-    MIN: 1,
-    MAX: 3
-  };
+  var EFFECT_HEAT_MIN = 1;
+  var EFFECT_HEAT_MAX = 3;
 
   var Effects = {
     NONE: function () {
@@ -29,10 +25,10 @@
       return 'invert' + '(' + value + '%)';
     },
     PHOBOS: function (value) {
-      return 'blur' + '(' + calculateEffectDepth((value / EFFECT_MAX_PERCENT), EFFECT_PHOBOS.MIN, EFFECT_PHOBOS.MAX) + 'px)';
+      return 'blur' + '(' + calculateEffectDepth((value / EFFECT_MAX_PERCENT), EFFECT_PHOBOS_MIN, EFFECT_PHOBOS_MAX) + 'px)';
     },
     HEAT: function (value) {
-      return 'brightness' + '(' + calculateEffectDepth((value / EFFECT_MAX_PERCENT), EFFECT_HEAT.MIN, EFFECT_HEAT.MAX) + ')';
+      return 'brightness' + '(' + calculateEffectDepth((value / EFFECT_MAX_PERCENT), EFFECT_HEAT_MIN, EFFECT_HEAT_MAX) + ')';
     }
   };
 
