@@ -16,22 +16,22 @@
   };
 
   var Effects = {
-    'none': function () {
+    NONE: function () {
       return '';
     },
-    'chrome': function (value) {
+    CHROME: function (value) {
       return 'grayscale' + '(' + (value / EFFECT_MAX_PERCENT) + ')';
     },
-    'sepia': function (value) {
+    SEPIA: function (value) {
       return 'sepia' + '(' + (value / EFFECT_MAX_PERCENT) + ')';
     },
-    'marvin': function (value) {
+    MARVIN: function (value) {
       return 'invert' + '(' + value + '%)';
     },
-    'phobos': function (value) {
+    PHOBOS: function (value) {
       return 'blur' + '(' + calculateEffectDepth((value / EFFECT_MAX_PERCENT), EFFECT_PHOBOS.MIN, EFFECT_PHOBOS.MAX) + 'px)';
     },
-    'heat': function (value) {
+    HEAT: function (value) {
       return 'brightness' + '(' + calculateEffectDepth((value / EFFECT_MAX_PERCENT), EFFECT_HEAT.MIN, EFFECT_HEAT.MAX) + ')';
     }
   };
@@ -59,14 +59,14 @@
       return;
     }
 
-    var effectName = element.getAttribute('id').split('-')[1];
+    var effectName = element.getAttribute('id').split('-')[1].toUpperCase();
     effectValue = effectName;
 
     if (effectName === NO_EFFECT) {
       resetImageEffect();
     } else {
       setImageEffect(effectName);
-      uploadImageElement.setAttribute('class', 'effects__preview--' + effectName);
+      uploadImageElement.setAttribute('class', 'effects__preview--' + effectName.toLowerCase());
       uploadImageElement.style.filter = Effects[effectName](EFFECT_DEFAULT_PERCENT);
     }
   };
