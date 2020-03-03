@@ -4,24 +4,16 @@
   var RANDOM_PHOTOS_COUNT = 10;
 
   var Filters = {
-    default: function (photos) {
-      var defaultPhotos = photos.slice();
-      return defaultPhotos;
+    DEFAULT: function (photos) {
+      return photos.slice();
     },
-    random: function (photos) {
-      var randomPhotos = photos.slice();
-      return shufflePhotos(randomPhotos).slice(0, RANDOM_PHOTOS_COUNT);
+    RANDOM: function (photos) {
+      return shufflePhotos(photos.slice()).slice(0, RANDOM_PHOTOS_COUNT);
     },
-    discussed: function (photos) {
-      var discussedPhotos = photos.slice();
-      discussedPhotos.sort(function (min, max) {
-        var difference = max.comments.length - min.comments.length;
-        if (difference === 0) {
-          difference = max.likes - min.likes;
-        }
-        return difference;
+    DISCUSSED: function (photos) {
+      return photos.slice().sort(function (firstPhoto, secondPhoto) {
+        return secondPhoto.comments.length - firstPhoto.comments.length;
       });
-      return discussedPhotos;
     }
   };
 
@@ -42,7 +34,7 @@
       return;
     }
 
-    var filterName = element.getAttribute('id').split('-')[1];
+    var filterName = element.getAttribute('id').split('-')[1].toUpperCase();
 
     currentFilterElement.classList.remove('img-filters__button--active');
     element.classList.add('img-filters__button--active');
