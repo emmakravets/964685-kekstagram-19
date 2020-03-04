@@ -8,7 +8,7 @@
       return photos.slice();
     },
     RANDOM: function (photos) {
-      return shufflePhotos(photos.slice()).slice(0, RANDOM_PHOTOS_COUNT);
+      return shufflePhotos(photos).slice(0, RANDOM_PHOTOS_COUNT);
     },
     DISCUSSED: function (photos) {
       return photos.slice().sort(function (firstPhoto, secondPhoto) {
@@ -18,13 +18,14 @@
   };
 
   var shufflePhotos = function (photos) {
-    for (var i = photos.length - 1; i > 0; i--) {
+    var newPhotosArr = photos.slice();
+    for (var i = newPhotosArr.length - 1; i > 0; i--) {
       var j = Math.round(Math.random() * (i + 1));
-      var temp = photos[j];
-      photos[j] = photos[i];
-      photos[i] = temp;
+      var temp = newPhotosArr[j];
+      newPhotosArr[j] = newPhotosArr[i];
+      newPhotosArr[i] = temp;
     }
-    return photos;
+    return newPhotosArr;
   };
 
   var filtersClickHandler = function (evt) {
