@@ -41,20 +41,20 @@
     return '';
   };
 
-  var hasAnyHashtagRepeat = function (hashtags) {
-    return hashtags.some(function (searchHashtag, seachIndex) {
-      return hashtags.some(function (hashtag, index) {
-        return hashtag === searchHashtag && seachIndex !== index;
+  var checkHashtags = function (items, callback) {
+    return items.some(function (firstItem, firstIndex) {
+      return items.some(function (secondItem, secondIndex) {
+        return firstIndex !== secondIndex && callback(firstItem, secondItem);
       });
     });
   };
 
-  var hasRegisterHashtagRepeat = function (hashtags) {
-    return hashtags.some(function (searchHashtag, seachIndex) {
-      return hashtags.some(function (hashtag, index) {
-        return hashtag.toLowerCase() === searchHashtag.toLowerCase() && seachIndex !== index;
-      });
-    });
+  var areNotUnique = function (firstHashtag, secondHashtag) {
+    return firstHashtag === secondHashtag;
+  };
+
+  var areNotRegisterUnique = function (firstHashtag, secondHashtag) {
+    return firstHashtag.toLowerCase() === secondHashtag.toLowerCase();
   };
 
   var validateHashtags = function (value) {
@@ -65,13 +65,14 @@
       return HashtagsValidationMessages.hashtagsCountLimit;
     }
 
-    if (hasAnyHashtagRepeat(hashtags)) {
+    if (checkHashtags(hashtags, areNotUnique)) {
       return HashtagsValidationMessages.hashtagsRepeats;
     }
 
-    if (hasRegisterHashtagRepeat(hashtags)) {
+    if (checkHashtags(hashtags, areNotRegisterUnique)) {
       return HashtagsValidationMessages.hashtagCase;
     }
+
     for (var i = 0; i < hashtags.length; i++) {
       validationMessage = validateHashtag(hashtags[i]);
       if (!validationMessage) {
