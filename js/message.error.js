@@ -11,7 +11,7 @@
     errorTemplateElement.addEventListener('click', areaErrorCloseClickHandler);
     uploadImageElement.classList.add('hidden');
 
-    if (typeof openErrorCallback === 'function') {
+    if (openErrorCallback) {
       openErrorCallback();
     }
   };
@@ -23,7 +23,7 @@
     uploadImageElement.classList.remove('hidden');
     uploadOverlayElement.classList.add('hidden');
 
-    if (typeof closeSuccessCallback === 'function') {
+    if (closeErrorCallback) {
       closeErrorCallback();
     }
   };

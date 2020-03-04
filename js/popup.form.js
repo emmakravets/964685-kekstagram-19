@@ -6,7 +6,7 @@
     document.body.classList.add('modal-open');
     uploadCloseElement.addEventListener('click', uploadPopupCloseHandler);
 
-    if (typeof openPopupCallback === 'function') {
+    if (openPopupCallback) {
       openPopupCallback();
     }
   };
@@ -16,7 +16,7 @@
     document.body.classList.remove('modal-open');
     uploadCloseElement.removeEventListener('click', uploadPopupCloseHandler);
 
-    if (typeof closePopupCallback === 'function') {
+    if (closePopupCallback) {
       closePopupCallback();
     }
   };
@@ -35,7 +35,7 @@
   };
 
   var uploadFormSubmitHandler = function (evt) {
-    if (typeof submitFormCallback === 'function') {
+    if (submitFormCallback) {
       submitFormCallback(new FormData(uploadFormElement));
     }
 

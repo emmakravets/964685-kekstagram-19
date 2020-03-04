@@ -91,13 +91,13 @@
   };
 
   var hashtagsInputFocusHandler = function () {
-    if (typeof hashtagsFocusCallback === 'function') {
+    if (hashtagsFocusCallback) {
       hashtagsFocusCallback();
     }
   };
 
   var hashtagsInputBlurHandler = function () {
-    if (typeof hashtagsBlurCallback === 'function') {
+    if (hashtagsBlurCallback) {
       hashtagsBlurCallback();
     }
   };

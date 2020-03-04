@@ -33,7 +33,7 @@
     setImageScale(normalizedNextScale);
   };
 
-  var uploadImagePreviewElement = document.querySelector('.img-upload__preview');
+  var uploadImagePreviewElement = document.querySelector('.img-upload__preview img');
   var scaleControlSmallerElement = document.querySelector('.scale__control--smaller');
   var scaleControlBiggerElement = document.querySelector('.scale__control--bigger');
   var scaleControlValueElement = document.querySelector('.scale__control--value');

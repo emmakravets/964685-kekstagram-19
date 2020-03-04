@@ -17,14 +17,14 @@
     }
   };
 
-  var shufflePhotos = function (array) {
-    for (var i = array.length - 1; i > 0; i--) {
+  var shufflePhotos = function (photos) {
+    for (var i = photos.length - 1; i > 0; i--) {
       var j = Math.round(Math.random() * (i + 1));
-      var temp = array[j];
-      array[j] = array[i];
-      array[i] = temp;
+      var temp = photos[j];
+      photos[j] = photos[i];
+      photos[i] = temp;
     }
-    return array;
+    return photos;
   };
 
   var filtersClickHandler = function (evt) {
@@ -40,7 +40,7 @@
     element.classList.add('img-filters__button--active');
     currentFilterElement = element;
 
-    if (typeof selectCallback === 'function') {
+    if (selectCallback) {
       if (typeof Filters[filterName] !== undefined) {
         selectCallback(Filters[filterName]);
       }

@@ -3,6 +3,9 @@
 (function () {
   var URL_LOAD = 'https://js.dump.academy/kekstagram/data';
   var URL_UPLOAD = 'https://js.dump.academy/kekstagram';
+
+  var METHOD_POST = 'POST';
+  var METHOD_GET = 'GET';
   var TIMEOUT_IN_MS = 5000;
 
   var Status = {
@@ -60,10 +63,10 @@
 
   window.backend = {
     load: function (successHandler, errorHandler) {
-      requestServerData(URL_LOAD, 'GET', null, successHandler, errorHandler);
+      requestServerData(URL_LOAD, METHOD_GET, null, successHandler, errorHandler);
     },
     upload: function (data, successHandler, errorHandler) {
-      requestServerData(URL_UPLOAD, 'POST', data, successHandler, errorHandler);
+      requestServerData(URL_UPLOAD, METHOD_POST, data, successHandler, errorHandler);
     },
   };
 })();
