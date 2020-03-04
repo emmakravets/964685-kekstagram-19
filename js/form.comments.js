@@ -25,13 +25,13 @@
   };
 
   var commentsInputFocusHandler = function () {
-    if (typeof commentsFocusCallback === 'function') {
+    if (commentsFocusCallback) {
       commentsFocusCallback();
     }
   };
 
   var commentsInputBlurHandler = function () {
-    if (typeof commentsBlurCallback === 'function') {
+    if (commentsBlurCallback) {
       commentsBlurCallback();
     }
   };

@@ -46,7 +46,7 @@
     var imageElement = linkElement.querySelector('img');
     var index = imageElement.getAttribute('data-index');
 
-    if (typeof photoSelectCallback === 'function') {
+    if (photoSelectCallback) {
       photoSelectCallback(index);
     }
   };
@@ -62,7 +62,7 @@
 
     var index = imageElement.getAttribute('data-index');
 
-    if (typeof photoSelectCallback === 'function') {
+    if (photoSelectCallback) {
       photoSelectCallback(index);
     }
   };

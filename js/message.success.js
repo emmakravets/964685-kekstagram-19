@@ -8,7 +8,7 @@
     successButtonElement.addEventListener('click', successButtonClickHandler);
     successTemplateElement.addEventListener('click', areaSuccessCloseHandler);
 
-    if (typeof openSuccessCallback === 'function') {
+    if (openSuccessCallback) {
       openSuccessCallback();
     }
   };
@@ -18,7 +18,7 @@
     successButtonElement.removeEventListener('click', successButtonClickHandler);
     successTemplateElement.removeEventListener('click', areaSuccessCloseHandler);
 
-    if (typeof closeSuccessCallback === 'function') {
+    if (closeSuccessCallback) {
       closeSuccessCallback();
     }
   };

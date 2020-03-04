@@ -40,7 +40,7 @@
     element.classList.add('img-filters__button--active');
     currentFilterElement = element;
 
-    if (typeof selectCallback === 'function') {
+    if (selectCallback) {
       if (typeof Filters[filterName] !== undefined) {
         selectCallback(Filters[filterName]);
       }
