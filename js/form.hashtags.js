@@ -29,14 +29,14 @@
     if (tag === HASHTAG_SYMBOL) {
       return HashtagsValidationMessages.notOneHashSymbol;
     }
+    if (tag.split(HASHTAG_SYMBOL).length - 1 > HASHTAG_HASH_LIMIT) {
+      return HashtagsValidationMessages.spacesBetweenHashtags;
+    }
     if (tag.length > HASHTAG_LENGTH_LIMIT) {
       return HashtagsValidationMessages.hashtagLimit;
     }
     if (!/^#[a-zA-Z0-9\u0400-\u04FF]+$/.test(tag)) {
       return HashtagsValidationMessages.hashtagBanSymbols;
-    }
-    if (tag.split(HASHTAG_SYMBOL).length - 1 > HASHTAG_HASH_LIMIT) {
-      return HashtagsValidationMessages.spacesBetweenHashtags;
     }
     return '';
   };
@@ -112,7 +112,7 @@
       hashtagsFocusCallback = focusCallback;
       hashtagsBlurCallback = blurCallback;
 
-      hashtagsInputElement.addEventListener('input', hashtagsInputChangeHandler);
+      hashtagsInputElement.addEventListener('change', hashtagsInputChangeHandler);
       hashtagsInputElement.addEventListener('invalid', hashtagsInputInvalidHandler);
       hashtagsInputElement.addEventListener('focus', hashtagsInputFocusHandler);
       hashtagsInputElement.addEventListener('blur', hashtagsInputBlurHandler);
@@ -121,7 +121,7 @@
       hashtagsFocusCallback = null;
       hashtagsBlurCallback = null;
 
-      hashtagsInputElement.removeEventListener('input', hashtagsInputChangeHandler);
+      hashtagsInputElement.removeEventListener('change', hashtagsInputChangeHandler);
       hashtagsInputElement.removeEventListener('invalid', hashtagsInputInvalidHandler);
       hashtagsInputElement.removeEventListener('focus', hashtagsInputFocusHandler);
       hashtagsInputElement.removeEventListener('blur', hashtagsInputBlurHandler);
