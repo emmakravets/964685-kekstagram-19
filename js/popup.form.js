@@ -34,7 +34,6 @@
   };
 
   var uploadFormSubmitHandler = function (evt) {
-    console.log('submit');
     if (submitFormCallback) {
       submitFormCallback(new FormData(uploadFormElement));
     }
