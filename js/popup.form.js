@@ -31,7 +31,6 @@
 
   var resetPopupForm = function () {
     uploadFormElement.reset();
-
   };
 
   var uploadFormSubmitHandler = function (evt) {

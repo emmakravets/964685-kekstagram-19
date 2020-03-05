@@ -3,6 +3,12 @@
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
+  var setPreviewPhoto = function (src) {
+    previewPhotoElements.forEach(function (photo) {
+      photo.style.backgroundImage = 'url(' + src + ')';
+    });
+  };
+
   var changePhotoHandler = function () {
     var file = photoUploadElement.files[0];
     var fileName = file.name.toLowerCase();
@@ -14,7 +20,8 @@
       var reader = new FileReader();
 
       reader.addEventListener('load', function () {
-        defaulPhotoElement.src = reader.result;
+        defaultPhotoElement.src = reader.result;
+        setPreviewPhoto(reader.result);
       });
 
       reader.readAsDataURL(file);
@@ -24,7 +31,8 @@
   };
 
   var photoUploadElement = document.querySelector('.img-upload__input');
-  var defaulPhotoElement = document.querySelector('.img-upload__preview img');
+  var defaultPhotoElement = document.querySelector('.img-upload__preview img');
+  var previewPhotoElements = document.querySelectorAll('.effects__preview');
   var errorChangeCallback;
 
   window.formPhoto = {
