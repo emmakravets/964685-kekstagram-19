@@ -75,6 +75,9 @@
 
     for (var i = 0; i < hashtags.length; i++) {
       validationMessage = validateHashtag(hashtags[i]);
+      if (validationMessage) {
+        return validationMessage;
+      }
     }
     return validationMessage;
   };
@@ -83,12 +86,9 @@
   var hashtagsFocusCallback;
   var hashtagsBlurCallback;
 
-  var isBlur = true;
   var hashtagsInputChangeHandler = function (evt) {
     hashtagsInputElement.style.borderColor = INPUT_DEFAULT_STYLE;
-    if (isBlur) {
-      hashtagsInputElement.setCustomValidity(validateHashtags(evt.target.value));
-    }
+    hashtagsInputElement.setCustomValidity(validateHashtags(evt.target.value));
   };
 
   var hashtagsInputFocusHandler = function () {
