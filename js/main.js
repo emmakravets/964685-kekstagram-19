@@ -58,6 +58,7 @@
           closeErrorCallback
       );
       closePopupCallback();
+      window.popupForm.reset();
     });
   };
 
@@ -80,6 +81,7 @@
   var documentKeydownEscPopupHandler = function (evt) {
     if (evt.key === KEY_ESC) {
       window.popupForm.close();
+      window.popupForm.reset();
     }
   };
 

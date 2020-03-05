@@ -32,7 +32,7 @@
     if (tag.length > HASHTAG_LENGTH_LIMIT) {
       return HashtagsValidationMessages.hashtagLimit;
     }
-    if (!/^#[a-zA-Z0-9]+/.test(tag)) {
+    if (!/^#[a-zA-Z0-9\u0400-\u04FF]+$/.test(tag)) {
       return HashtagsValidationMessages.hashtagBanSymbols;
     }
     if (tag.split(HASHTAG_SYMBOL).length - 1 > HASHTAG_HASH_LIMIT) {
@@ -75,9 +75,6 @@
 
     for (var i = 0; i < hashtags.length; i++) {
       validationMessage = validateHashtag(hashtags[i]);
-      if (!validationMessage) {
-        return validationMessage;
-      }
     }
     return validationMessage;
   };
@@ -86,9 +83,12 @@
   var hashtagsFocusCallback;
   var hashtagsBlurCallback;
 
+  var isBlur = true;
   var hashtagsInputChangeHandler = function (evt) {
     hashtagsInputElement.style.borderColor = INPUT_DEFAULT_STYLE;
-    hashtagsInputElement.setCustomValidity(validateHashtags(evt.target.value));
+    if (isBlur) {
+      hashtagsInputElement.setCustomValidity(validateHashtags(evt.target.value));
+    }
   };
 
   var hashtagsInputFocusHandler = function () {
@@ -112,7 +112,7 @@
       hashtagsFocusCallback = focusCallback;
       hashtagsBlurCallback = blurCallback;
 
-      hashtagsInputElement.addEventListener('change', hashtagsInputChangeHandler);
+      hashtagsInputElement.addEventListener('input', hashtagsInputChangeHandler);
       hashtagsInputElement.addEventListener('invalid', hashtagsInputInvalidHandler);
       hashtagsInputElement.addEventListener('focus', hashtagsInputFocusHandler);
       hashtagsInputElement.addEventListener('blur', hashtagsInputBlurHandler);
@@ -121,7 +121,7 @@
       hashtagsFocusCallback = null;
       hashtagsBlurCallback = null;
 
-      hashtagsInputElement.removeEventListener('change', hashtagsInputChangeHandler);
+      hashtagsInputElement.removeEventListener('input', hashtagsInputChangeHandler);
       hashtagsInputElement.removeEventListener('invalid', hashtagsInputInvalidHandler);
       hashtagsInputElement.removeEventListener('focus', hashtagsInputFocusHandler);
       hashtagsInputElement.removeEventListener('blur', hashtagsInputBlurHandler);

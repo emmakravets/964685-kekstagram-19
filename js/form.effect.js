@@ -58,7 +58,7 @@
     var effectName = element.getAttribute('id').split('-')[1].toUpperCase();
     effectValue = effectName;
 
-    if (effectName === NO_EFFECT) {
+    if (effectName === NO_EFFECT.toUpperCase()) {
       resetImageEffect();
     } else {
       setImageEffect(effectName);
