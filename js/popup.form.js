@@ -34,7 +34,7 @@
   };
 
   var uploadFormSubmitHandler = function (evt) {
-    if (submitFormCallback) {
+    if (uploadFormElement.checkValidity() && submitFormCallback) {
       submitFormCallback(new FormData(uploadFormElement));
     }
 
