@@ -89,10 +89,9 @@
   var hashtagsChangeHandler = function (evt) {
     var error = validateHashtags(evt.target.value);
     if (error) {
-
-      hashtagsInputElement.setCustomValidity(error);
+      evt.target.setCustomValidity(error);
     } else {
-      hashtagsInputElement.setCustomValidity('');
+      evt.target.setCustomValidity('');
     }
   };
 

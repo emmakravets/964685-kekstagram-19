@@ -22,9 +22,9 @@
   var commentsChangeHandler = function (evt) {
     var error = validateComments(evt.target.value);
     if (error) {
-      commentsInputElement.setCustomValidity(error);
+      evt.target.setCustomValidity(error);
     } else {
-      commentsInputElement.setCustomValidity('');
+      evt.target.setCustomValidity('');
     }
   };
 
