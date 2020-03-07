@@ -111,7 +111,6 @@
   };
 
   var hashtagsInputBlurHandler = function () {
-    hashtagsInputElement.style.borderColor = INPUT_DEFAULT_STYLE;
     if (hashtagsBlurCallback) {
       hashtagsBlurCallback();
     }
@@ -126,6 +125,7 @@
       hashtagsFocusCallback = focusCallback;
       hashtagsBlurCallback = blurCallback;
 
+      hashtagsInputElement.style.borderColor = INPUT_DEFAULT_STYLE;
       hashtagsInputElement.addEventListener('input', hashtagsInputHandler);
       hashtagsInputElement.addEventListener('invalid', hashtagsInputInvalidHandler);
       hashtagsInputElement.addEventListener('focus', hashtagsInputFocusHandler);

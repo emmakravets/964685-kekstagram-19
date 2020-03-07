@@ -44,7 +44,6 @@
   };
 
   var commentsInputBlurHandler = function () {
-    commentsInputElement.style.borderColor = INPUT_DEFAULT_STYLE;
     if (commentsBlurCallback) {
       commentsBlurCallback();
     }
@@ -59,6 +58,7 @@
       commentsFocusCallback = focusCallback;
       commentsBlurCallback = blurCallback;
 
+      commentsInputElement.style.borderColor = INPUT_DEFAULT_STYLE;
       commentsInputElement.addEventListener('input', commentsInputHandler);
       commentsInputElement.addEventListener('invalid', commentsInputInvalidHandler);
       commentsInputElement.addEventListener('focus', commentsInputFocusHandler);
