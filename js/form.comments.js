@@ -19,9 +19,22 @@
   var commentsFocusCallback;
   var commentsBlurCallback;
 
-  var commentsInputChangeHandler = function (evt) {
+  var validateCommentsField = function (evt) {
+    var error = validateComments(evt.target.value);
+    if (error) {
+      commentsInputElement.setCustomValidity(error);
+    } else {
+      commentsInputElement.setCustomValidity('');
+    }
+  };
+
+  var commentsInputHandler = function (evt) {
     commentsInputElement.style.borderColor = INPUT_DEFAULT_STYLE;
-    commentsInputElement.setCustomValidity(validateComments(evt.target.value));
+    if (evt.target.value.length !== 0) {
+      validateCommentsField(evt);
+    } else {
+      evt.target.setCustomValidity('');
+    }
   };
 
   var commentsInputFocusHandler = function () {
@@ -31,6 +44,7 @@
   };
 
   var commentsInputBlurHandler = function () {
+    commentsInputElement.style.borderColor = INPUT_DEFAULT_STYLE;
     if (commentsBlurCallback) {
       commentsBlurCallback();
     }
@@ -45,7 +59,7 @@
       commentsFocusCallback = focusCallback;
       commentsBlurCallback = blurCallback;
 
-      commentsInputElement.addEventListener('change', commentsInputChangeHandler);
+      commentsInputElement.addEventListener('input', commentsInputHandler);
       commentsInputElement.addEventListener('invalid', commentsInputInvalidHandler);
       commentsInputElement.addEventListener('focus', commentsInputFocusHandler);
       commentsInputElement.addEventListener('blur', commentsInputBlurHandler);
@@ -54,7 +68,7 @@
       commentsFocusCallback = null;
       commentsBlurCallback = null;
 
-      commentsInputElement.removeEventListener('change', commentsInputChangeHandler);
+      commentsInputElement.removeEventListener('input', commentsInputHandler);
       commentsInputElement.removeEventListener('invalid', commentsInputInvalidHandler);
       commentsInputElement.removeEventListener('focus', commentsInputFocusHandler);
       commentsInputElement.removeEventListener('blur', commentsInputBlurHandler);
