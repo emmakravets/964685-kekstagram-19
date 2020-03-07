@@ -86,9 +86,10 @@
   var hashtagsFocusCallback;
   var hashtagsBlurCallback;
 
-  var validateHashtagsField = function (evt) {
+  var hashtagsChangeHandler = function (evt) {
     var error = validateHashtags(evt.target.value);
     if (error) {
+
       hashtagsInputElement.setCustomValidity(error);
     } else {
       hashtagsInputElement.setCustomValidity('');
@@ -97,11 +98,7 @@
 
   var hashtagsInputHandler = function (evt) {
     hashtagsInputElement.style.borderColor = INPUT_DEFAULT_STYLE;
-    if (evt.target.value.length !== 0) {
-      validateHashtagsField(evt);
-    } else {
-      evt.target.setCustomValidity('');
-    }
+    evt.target.setCustomValidity('');
   };
 
   var hashtagsInputFocusHandler = function () {
@@ -126,6 +123,7 @@
       hashtagsBlurCallback = blurCallback;
 
       hashtagsInputElement.style.borderColor = INPUT_DEFAULT_STYLE;
+      hashtagsInputElement.addEventListener('change', hashtagsChangeHandler);
       hashtagsInputElement.addEventListener('input', hashtagsInputHandler);
       hashtagsInputElement.addEventListener('invalid', hashtagsInputInvalidHandler);
       hashtagsInputElement.addEventListener('focus', hashtagsInputFocusHandler);
@@ -135,6 +133,7 @@
       hashtagsFocusCallback = null;
       hashtagsBlurCallback = null;
 
+      hashtagsInputElement.removeEventListener('change', hashtagsChangeHandler);
       hashtagsInputElement.removeEventListener('input', hashtagsInputHandler);
       hashtagsInputElement.removeEventListener('invalid', hashtagsInputInvalidHandler);
       hashtagsInputElement.removeEventListener('focus', hashtagsInputFocusHandler);
