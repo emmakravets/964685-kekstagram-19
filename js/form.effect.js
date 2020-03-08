@@ -64,7 +64,7 @@
     } else {
       setImageEffect(effectName);
       uploadImageElement.setAttribute('class', 'effects__preview--' + effectName.toLowerCase());
-      uploadImageElement.style.filter = Effects[effectName];
+      uploadImageElement.style.filter = Effects[effectName](EFFECT_DEFAULT_PERCENT);
     }
   };
 
