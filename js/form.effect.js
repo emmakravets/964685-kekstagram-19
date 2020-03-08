@@ -37,7 +37,7 @@
   };
 
   var resetImageEffect = function () {
-    uploadImageElement.style.filter = 'none';
+    uploadImageElement.style = '';
     effectLevelFieldsetElement.style.display = 'none';
     uploadImageElement.removeAttribute('class');
   };
