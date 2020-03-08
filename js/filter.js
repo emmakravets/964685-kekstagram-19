@@ -42,7 +42,7 @@
     currentFilterElement = element;
 
     if (selectCallback) {
-      if (typeof Filters[filterName] !== undefined) {
+      if (Filters[filterName]) {
         selectCallback(Filters[filterName]);
       }
     }
