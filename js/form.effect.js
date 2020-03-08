@@ -37,12 +37,13 @@
   };
 
   var resetImageEffect = function () {
-    uploadImagePreviewElement.style.filter = '';
+    uploadImageElement.style.filter = 'none';
     effectLevelFieldsetElement.style.display = 'none';
+    uploadImageElement.removeAttribute('class');
   };
 
   var setImageEffect = function (effect) {
-    uploadImagePreviewElement.style.filter = Effects[effect](EFFECT_DEFAULT_PERCENT);
+    uploadImageElement.style.filter = Effects[effect](EFFECT_DEFAULT_PERCENT);
     effectLevelFieldsetElement.style.display = 'block';
     effectLevelPinElement.style.left = 0;
     effectLevelDepthElement.style.width = 0;
@@ -91,7 +92,7 @@
 
       effectLevelValueElement.value = Math.round(shiftLeft / (effectLevelLineElement.clientWidth / EFFECT_MAX_PERCENT));
       effectLevelValueElement.setAttribute('value', effectLevelValueElement.value);
-      uploadImagePreviewElement.style.filter = Effects[effectValue](effectLevelValueElement.value);
+      uploadImageElement.style.filter = Effects[effectValue](effectLevelValueElement.value);
     };
 
     var effectLevelPinMouseUpHandler = function (upEvt) {
