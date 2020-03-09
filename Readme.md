@@ -1,6 +1,6 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
-* Студент: [Эмма Кравец](https://up.htmlacademy.ru/javascript/19/user/964685).
+* Студент: [Эмма Кравец](https://up.htmlacademy.ru/javascript/19/user/964685) (https://emmakravets.github.io/964685-kekstagram-19/).
 * Наставник: [Сергей Ufocoder](https://up.htmlacademy.ru/javascript/19/user/573445).
 
 ---
